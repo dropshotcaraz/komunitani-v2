@@ -9,6 +9,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
 use App\Models\Post;
 use App\Models\Like;
 use App\Models\Comment;
@@ -117,6 +118,7 @@ class PostController extends Controller
         return view('posts.edit', compact('post'));
     }
 
+
     public function update(Request $request, $postId)
     {
         $request->validate([
@@ -126,6 +128,7 @@ class PostController extends Controller
         ]);
 
         $post = Post::findOrFail($postId);
+
         // Ensure the user is authorized to update the post
         if ($post->user_id !== Auth::id()) {
             return redirect()->back()->with('error', 'Unauthorized action.');
@@ -133,26 +136,41 @@ class PostController extends Controller
 
         $imagePath = $post->image_path; // Keep the existing image path
 
+        // Check if the remove_image input is set, indicating the image should be removed
+        if ($request->has('remove_image') && $imagePath) {
+            // Delete the image from storage
+            Storage::disk('public')->delete($imagePath);
+            $imagePath = null; // Set image path to null for database update
+        }
+
+        // Handle image upload if a new image is uploaded
         if ($request->hasFile('image')) {
             try {
                 $image = $request->file('image');
                 $imageName = time() . '.' . $image->getClientOriginalExtension();
-                $imagePath = $image->storeAs('public/posts', $imageName, 'public');
-                $imagePath = str_replace('public/', '', $imagePath);
+                $newImagePath = $image->storeAs('public/posts', $imageName, 'public');
+                $imagePath = str_replace('public/', '', $newImagePath);
+
+                // Delete the old image if a new one is uploaded and if it exists
+                if ($post->image_path) {
+                    Storage::disk('public')->delete($post->image_path);
+                }
             } catch (\Exception $e) {
                 \Log::error('Image upload failed: ' . $e->getMessage());
                 return redirect()->back()->with('error', 'Image upload failed');
             }
         }
 
+        // Update the post with new content and image path
         $post->update([
             'content' => $request->input('content'),
             'image_path' => $imagePath,
             'topic' => $request->input('topic')
         ]);
 
-        return redirect()->route('dashboard')->with('success', 'Post updated successfully');
+        return redirect()->back()->with('success', 'Post updated successfully');
     }
+
 
     public function destroy($postId)
     {
@@ -174,7 +192,7 @@ class PostController extends Controller
         if ($comment->user_id !== Auth::id()) {
             return response()->json(['success' => false, 'message' => 'Unauthorized action.']);
         }
-        return response()->json(['success' => true, 'comment' => $comment]);
+        return redirect()->back()->with('comment', $comment);
     }
 
     public function commentUpdate(Request $request, $commentId)
@@ -190,7 +208,7 @@ class PostController extends Controller
         }
         $comment->update(['content' => $request->content]);
 
-        return response()->json(['success' => true, 'comment' => $comment]);
+        return redirect()->back()->with('comment', $comment);
     }
 
     public function commentDestroy($commentId)
@@ -203,7 +221,7 @@ class PostController extends Controller
 
         $comment->delete();
 
-        return response()->json(['success' => true]);
+        return redirect()->back();
     }
 }
 

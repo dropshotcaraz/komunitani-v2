@@ -3,11 +3,12 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <div class="justify-center py-6">
         <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
-            <main class="col-span-12 md:col-span-9 p-4 mt-20 md:mt-0 w-auto">
+            <main class="col-span-12 md:col-span-9 p-4 mt-20 sm:mt-0 md:mt-0 w-auto">
 
                 <!-- Post Bar -->
                 <div class="bg-[#6FA843] shadow-lg p-6 rounded-3xl mb-10 border border-gray-200">
                     <h1 class="font-bold text-white text-3xl mb-4">Beranda Post</h1>
+                    
                     <form id="postForm" class="space-y-4" action="{{ route('post.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <textarea id="postTextarea" name="content" placeholder="Tulis pertanyaan atau informasi di sini" class="w-full bg-gray-50 p-3 rounded-lg outline-none border border-gray-300 focus:border-[#6FA843]"></textarea>
@@ -24,11 +25,13 @@
                                 </svg>
                             <input type="file" id="imageUpload" name="image" class="hidden" accept="image/*" onchange="previewImage(event)">
                         </div>
+
                         <!-- Thumbnail Preview -->
                         <div id="thumbnailPreview" class="mt-4">
                             <img id="thumbnail" src="" alt="Image Preview" class="hidden w-full h-auto rounded-lg border border-gray-200">
                         </div>
                         <button type="submit" id="submitPost" class="w-full mt-2 bg-[#F7F0CF] text-black px-4 py-2 rounded-lg hover:bg-[#578432] transition">Kirim</button>
+                    
                     </form>
                 </div>
 
@@ -43,20 +46,32 @@
                                 <p class="text-gray-500 text-sm">{{ $post->created_at->format('d M Y - H:i') }}</p>
                             </div>
                         </div>
-                        <p class="font-semibold text-[# 6FA843] mb-1">Topik: {{ $post->topic ?? 'Umum' }}</p>
+                        <p class="font-semibold text-[#6FA843] mb-1">Topik: {{ $post->topic ?? 'Umum' }}</p>
                         <p class="text-gray-700">{{ $post->content }}</p>
                         @if($post->image_path)
-                        <img src="{{ asset("storage/public/{$post->image_path}") }}" alt="Post Image" class="w-[300px] h-auto mt-4 rounded-lg border border-gray-200 cursor-pointer" onclick="openImageModal('{{ asset("storage/public/{$post->image_path}") }}')">
+                        <img src="{{ asset("storage/public/{$post->image_path}") }}" alt="Post Image" class="w-[300px] sm:w-full h-auto mt-4 rounded-lg border border-gray-200 cursor-pointer" onclick="openImageModal('{{ asset("storage/public/{$post->image_path}") }}')">
                         @endif
                         
                         <!-- Edit and Delete Buttons -->
-                        <div class="flex justify-between mt-4">
-                            <a href="{{ route('posts.edit', $post->id) }}" class="text-blue-500 hover:underline">Edit</a>
-                            <form action="{{ route('posts.destroy', $post->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this post?');">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="text-red-500 hover:underline">Delete</button>
-                            </form>
+                        <div class="flex justify-end mt-4">
+                            @if(auth()->check() && (auth()->user()->id === $post->user_id || auth()->user()->is_admin)) <!-- Check if user is the owner or an admin -->
+                                <a href="{{ route('posts.edit', $post->id) }}" class="flex items-center text-blue-500 hover:text-blue-600 transition mr-4" title="Edit">
+                                    <!-- SVG Icon for Edit -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h4m-4 0V3m0 4L3 21h18l-4-4m-4-4l4-4" />
+                                    </svg>
+                                </a>
+                                <form action="{{ route('posts.destroy', $post->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this post?');" class="inline">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="flex items-center text-red-500 hover:text-red-600 transition" title="Delete">
+                                        <!-- SVG Icon for Delete -->
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                        </svg>
+                                    </button>
+                                </form>
+                            @endif
                         </div>
 
                         <!-- Image Modal -->
@@ -73,7 +88,7 @@
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 heart-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
                                 </svg>
-                                Like (<span class="like-count">{{ $post->likes()->count() }}</span>)
+                                Like (<span class="like-count">{{ $post->likes()->count() }}</span >)
                             </button>
                             <button class="flex items-center text-gray-500 hover:text-blue-500 transition comment-button" data-post-id="{{ $post->id }}">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -94,17 +109,24 @@
                             </form>
                         </div>
                         <div class="comments mt-4 hidden" id="comments{{ $post->id }}">
-                            @foreach($post->comments as $comment)
-                            <div class="bg-gray-100 p-2 rounded-lg mb-2">
-                                <strong>{{ $comment->user->name }}</strong>: {{ $comment->content }}
-                                <div class="flex justify-between mt-2">
-                                    <a href="{{ route('comments.edit', $comment->id) }}" class="text-blue-500 hover:underline">Edit</a>
+                        @foreach($post->comments as $comment)
+                        <div class="bg-gray-100 p-2 rounded-lg mb-2">
+                            <strong>{{ $comment->user->name }}</strong>:
+                            @if(auth()->check() && (auth()->user()->id === $comment->user_id || auth()->user()->is_admin)) <!-- Check if user is the owner or an admin -->
+                                <form action="{{ route('comments.update', $comment->id) }}" method="POST" class="flex items-center space-x-2">
+                                    @csrf
+                                    @method('PUT')
+                                    <input type="text" name="content" value="{{ $comment->content }}" class="w-full bg-gray-50 p-3 rounded-lg outline-none border border-gray-300 focus:border-[#6FA843]" required>
+                                    <button type="submit" class="bg-blue-500 text-white px-4 py-1 rounded-lg hover:bg-blue-600 transition">Update</button>
                                     <form action="{{ route('comments.destroy', $comment->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this comment?');">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="text-red-500 hover:underline">Delete</button>
+                                        <button type="submit" class="bg-red-500 text-white px-4 py-1 rounded-lg hover:bg-red-600 transition">Delete</button>
                                     </form>
-                                </div>
+                                </form>
+                            @else
+                                <span>{{ $comment->content }}</span>
+                            @endif
                             </div>
                             @endforeach
                         </div>
@@ -113,6 +135,18 @@
                 </div>
 
                 <script>
+                    function confirmDelete(url) {
+                    if (confirm('Are you sure you want to delete this comment?')) {
+                        window.location.href = url;
+                    }
+                }
+
+                function hideCommentForm(postId) {
+                    // Optionally hide the comment form after submission
+                    document.getElementById('commentForm' + postId).classList.add('hidden');
+                    // Optionally show the comments section
+                    document.getElementById('comments' + postId).classList.remove('hidden');
+                }
                 function openImageModal(imageSrc) { 
                     const modal = $('#imageModal');
                     const modalImage = $('#modalImage');

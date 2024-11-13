@@ -40,10 +40,16 @@
                                 </button>
                                 <input type="file" id="imageUpload" name="image" class="hidden" accept="image/*" onchange="previewImage(event)">
                             </div>
+                            
                             <!-- Thumbnail Preview -->
                             <div id="thumbnailPreview" class="mt-4">
                                 <img id="thumbnail" src="{{ asset("storage/public/{$post->image_path}") }}" alt="Current Image" class="w-full h-auto rounded-lg border border-gray-200">
+                                <!-- Remove Image Button -->
+                                <button type="button" name="remove_image" onclick="removeImage()" class="mt-2 bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition">
+                                    Remove Image
+                                </button>
                             </div>
+
                             <button type="submit" class="w-full mt-2 bg-[#F7F0CF] text-black px-4 py-2 rounded-lg hover:bg-[#578432] transition">Update Post</button>
                         </div>
                     </form>
@@ -53,7 +59,7 @@
     </div>
 
     <script>
-        function previewImage(event ) {
+        function previewImage(event) {
             const file = event.target.files[0];
             const thumbnail = document.getElementById('thumbnail');
             const thumbnailPreview = document.getElementById('thumbnailPreview');
@@ -67,6 +73,26 @@
                 reader.readAsDataURL(file);
             } else {
                 thumbnail.classList.add('hidden'); // Hide if no file
+            }
+        }
+
+        function removeImage() {
+            // Hide the preview image
+            const thumbnail = document.getElementById('thumbnail');
+            thumbnail.src = '';
+            thumbnail.classList.add('hidden');
+
+            // Clear the file input
+            document.getElementById('imageUpload').value = '';
+
+            // Optionally, add a hidden input to mark the image for removal on the server
+            if (!document.getElementById('removeImageInput')) {
+                const removeImageInput = document.createElement('input');
+                removeImageInput.type = 'hidden';
+                removeImageInput.name = 'remove_image';
+                removeImageInput.value = 'true';
+                removeImageInput.id = 'removeImageInput';
+                document.querySelector('form').appendChild(removeImageInput);
             }
         }
     </script>
