@@ -13,6 +13,7 @@
         <script src="https://cdn.tailwindcss.com/"></script>
 
         <title>{{ config('app.name', 'Komunitani') }}</title>
+        <link rel="icon" href="https://i.ibb.co.com/89qxHLW/logokomunitani-chara.png" type="image/x-icon">
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">

@@ -52,8 +52,7 @@
                     
                     <!-- Topic and Edit/Delete Buttons -->
                     <div class="flex items-center justify-between mb-2">
-                        <p class="font-semibold text-[#6FA843]">Topik: {{ $post->topic ?? 'Umum' }}</p>
-                        
+                        <p class="font-bold text-2xl text-[#6FA843]">Topik: {{ $post->topic ?? 'Umum' }}</p>
                         @if(auth()->check() && (auth()->user()->id === $post->user_id || auth()->user()->is_admin)) 
                         <div class="flex space-x-4">
                             <a href="{{ route('posts.edit', $post->id) }}" class="flex items-center text-blue-500 hover:text-blue-600 transition" title="Edit">
@@ -79,7 +78,7 @@
                     <!-- Post Content -->
                     <p class="text-gray-700">{{ $post->content }}</p>
                     @if($post->image_path)
-                    <img src="{{ asset('storage/public/'.$post->image_path) }}" alt="Post Image" class="w-[300px] sm:w-full h-auto mt-4 rounded-lg border border-gray-200 cursor-pointer" onclick="openImageModal('{{ asset('storage/public/'.$post->image_path) }}')">
+                    <img src="{{ asset('storage/public/'.$post->image_path) }}" alt="Post Image" class="w-[300px] sm:w-full h-auto mt-4 rounded-lg border border-[#434028] cursor-pointer" onclick="openImageModal('{{ asset('storage/public/'.$post->image_path) }}')">
                     @endif
 
                         <!-- Image Modal -->
