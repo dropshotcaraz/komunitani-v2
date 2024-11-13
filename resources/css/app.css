@@ -4,11 +4,10 @@
 
 body {
 
-    background:url(https://i.ibb.co.com/nrrwPS4/background.jpg);
+    background:url(https://i.ibb.co.com/WGxJRQf/45126654-1.jpg);
     background-position: center center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    height: 100vh;
+    background-repeat: repeat;
+    background-size: contain;
     width: 100%;
 
 }

@@ -52,7 +52,7 @@
                     
                     <!-- Topic and Edit/Delete Buttons -->
                     <div class="flex items-center justify-between mb-2">
-                        <p class="font-bold text-2xl text-[#6FA843]">Topik: {{ $post->topic ?? 'Umum' }}</p>
+                        <p class="font-bold text-xl text-[#6FA843]">Topik: {{ $post->topic ?? 'Umum' }}</p>
                         @if(auth()->check() && (auth()->user()->id === $post->user_id || auth()->user()->is_admin)) 
                         <div class="flex space-x-4">
                             <a href="{{ route('posts.edit', $post->id) }}" class="flex items-center text-blue-500 hover:text-blue-600 transition" title="Edit">
@@ -196,7 +196,7 @@
                     const heartIcon = button.querySelector('.heart-icon');
 
                     // Set initial like count and color based on local storage
-                    if (likedState === 'true' || likedState === true) {
+                    if (likedState == 'true' || likedState == true) {
                         heartIcon.classList.add('text-red-500');
                         button.classList.add('text-red-500');
                     }

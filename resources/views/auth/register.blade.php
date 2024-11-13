@@ -15,7 +15,7 @@
     @vite('resources/css/app.css')
 </head>
 <body class="bg-white-100 flex justify-center items-center min-h-screen">
-    <section class="flex flex-col px-11 pt-8 pb-8 bg-[#F7F0CF] rounded-3xl shadow-lg max-md:px-5 max-md:pb-24">
+    <section class="flex my-12 flex-col px-11 pt-8 pb-8 bg-[#F7F0CF] rounded-3xl shadow-lg max-md:px-5 max-md:pb-24">
         <!-- Header Section -->
         <div class="flex justify-center items-center mb-2">
             <img

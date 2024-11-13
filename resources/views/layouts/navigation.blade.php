@@ -25,13 +25,13 @@
             <div class="hidden sm:flex sm:items-center sm:ms-6">
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
-                        <button class="inline-flex items-center px-3 py-2 border border-[#434028] text-sm leading-4 font-medium rounded-md text-gray-700 bg-[#F7F0CF] hover:bg-green-100 transition ease-in-out duration-150">
+                        <button class="inline-flex items-center px-3 py-2 border border-[#434028] text-sm leading-4 font-medium rounded-2xl text-gray-700 bg-[#F7F0CF] hover:bg-green-100 transition ease-in-out duration-150">
                             @if (isset(Auth::user()->profile_picture) && Auth::user()->profile_picture)
                                 <div class="p-1">
-                                    <img src="{{ asset('storage/' . Auth::user()->profile_picture) }}" alt="Profile Picture" class="h-8 w-8 rounded-full object-cover" />
+                                    <img src="{{ asset('storage/' . Auth::user()->profile_picture) }}" alt="Profile Picture" class="h-6 w-6 rounded-full object-cover" />
                                 </div>
                             @endif
-                            <div class="">{{ Auth::user()->name }}</div>
+                            <div class="mx-1">{{ Auth::user()->name }}</div>
 
                             <div class="ms-1">
                                 <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
