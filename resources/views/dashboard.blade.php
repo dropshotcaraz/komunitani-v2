@@ -111,7 +111,7 @@
                         <div class="comments mt-4 hidden" id="comments{{ $post->id }}">
                         @foreach($post->comments as $comment)
                         <div class="bg-gray-100 p-2 rounded-lg mb-2">
-                            <strong>{{ $comment->user->name }}</strong>:
+                            <strong class="p-2 my-2">{{ $comment->user->name }}</strong>:
                             @if(auth()->check() && (auth()->user()->id === $comment->user_id || auth()->user()->is_admin)) <!-- Check if user is the owner or an admin -->
                                 <form action="{{ route('comments.update', $comment->id) }}" method="POST" class="flex items-center space-x-2">
                                     @csrf
