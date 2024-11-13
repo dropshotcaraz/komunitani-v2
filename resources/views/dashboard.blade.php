@@ -39,7 +39,11 @@
                 @foreach($posts as $post)
                 <div class="bg-[#F7F0CF] shadow-lg p-6 rounded-3xl mt-6 mb-6 border border-gray-200">
                     <div class="flex items-center justify-right mb-4">
+                    @if (isset($post->user->profile_picture) && $post->user->profile_picture)
+                        <img src="{{ asset('storage/' . $post->user->profile_picture) }}" alt="{{ $post->user->name }}" class="w-[50px] h-12 rounded-full mr-4 border border-gray-300">
+                    @else
                         <img src="{{ asset('images/avatar1.png') }}" alt="{{ $post->user->name }}" class="w-[50px] h-12 rounded-full mr-4 border border-gray-300">
+                    @endif
                         <div>
                             <h2 class="font-bold text-[#2D3748]">{{ $post->user->name }}</h2>
                             <p class="text-gray-500 text-sm">{{ $post->created_at->format('d M Y - H:i') }}</p>
