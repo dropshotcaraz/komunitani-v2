@@ -15,10 +15,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
+// For 'ProfileController' 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::prefix('profile')->group(function () {
         Route::get('/', [ProfileController::class, 'show'])->name('profile.show');
@@ -26,6 +23,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::patch('/', [ProfileController::class, 'update'])->name('profile.update');
         Route::delete('/', [ProfileController::class, 'destroy'])->name('profile.destroy');
     });
+    Route::get('/profile/view/{id}', [ProfileController::class, 'viewProfile'])
+        ->name('profile.view');
 });
 
 // For 'PostController' as an invokable controller

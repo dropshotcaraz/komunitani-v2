@@ -37,17 +37,20 @@
                 @foreach($posts as $post)
                 <div class="bg-[#F7F0CF] shadow-lg p-6 rounded-3xl mt-6 mb-6 border border-gray-200">
                     <div class="flex items-center justify-right mb-4">
-                    @if (isset($post->user->profile_picture) && $post->user->profile_picture)
-                        <img src="{{ asset('storage/' . $post->user->profile_picture) }}" alt="{{ $post->user->name }}" class="w-[50px] h-12 rounded-full mr-4 border border-gray-300">
-                    @else
-                        <img src="{{ asset('images/avatar1.png') }}" alt="{{ $post->user->name }}" class="w-[50px] h-12 rounded-full mr-4 border border-gray-300">
-                    @endif
-                        <div>
+                    <a href="{{ auth()->user()->id === $post->user_id ? route('profile.show') : route('profile.view', $post->user->id) }}">
+                        @if (isset($post->user->profile_picture) && $post->user->profile_picture)
+                            <img src="{{ asset('storage/' . $post->user->profile_picture) }}" alt="{{ $post->user->name }}" class="w-[50px] h-12 rounded-full mr-4 border border-gray-300">
+                        @else
+                            <img src="{{ asset('images/avatar1.png') }}" alt="{{ $post->user->name }}" class="w-[50px] h-12 rounded-full mr-4 border border-gray-300">
+                        @endif
+                    </a>
+                    <div>
+                        <a href="{{ auth()->user()->id === $post->user_id ? route('profile.show') : route('profile.view', $post->user->id) }}">
                             <h2 class="font-bold text-[#2D3748]">{{ $post->user->name }}</h2>
-                            <p class="text-gray-500 text-sm">{{ $post->created_at->setTimezone('Asia/Jakarta')->format('d M Y - H:i') }}</p>
-                        </div>
+                        </a>
+                        <p class="text-gray-500 text-sm">{{ $post->created_at->setTimezone('Asia/Jakarta')->format('d M Y - H:i') }}</p>
                     </div>
-                    
+                </div>
                     <!-- Topic and Edit/Delete Buttons -->
                     <div class="flex items-center justify-between mb-2">
                         <p class="font-bold text-xl text-[#6FA843]">Topik: {{ $post->topic ?? 'Umum' }}</p>
@@ -117,7 +120,8 @@
                         <div class="comments mt-4 hidden" id="comments{{ $post->id }}">
                         @foreach($post->comments as $comment)
                         <div class="bg-gray-100 p-2 rounded-lg mb-2">
-                            <strong class="p-2 my-2">{{ $comment->user->name }}</strong>:
+                            <a href="{{ auth()->user()->id === $post->user_id ? route('profile.show') : route('profile.view', $post->user->id) }}">
+                            <strong class="p-2 my-2">{{ $comment->user->name }}</strong>: </a>
                             @if(auth()->check() && (auth()->user()->id === $comment->user_id || auth()->user()->is_admin)) <!-- Check if user is the owner or an admin -->
                                 <form action="{{ route('comments.update', $comment->id) }}" method="POST" class="flex items-center space-x-2">
                                     @csrf

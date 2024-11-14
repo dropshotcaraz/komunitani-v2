@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Validation\Rule;
+use App\Models\User;
 use App\Models\Post;
 use Illuminate\View\View;
 
@@ -116,9 +117,9 @@ class ProfileController extends Controller
     }
 
     /**
-     * Display the user's profile.
+     * Display the logged-in user's own profile.
      */
-    public function show()
+    public function show(): View
     {
         $user = Auth::user();
         
@@ -133,7 +134,38 @@ class ProfileController extends Controller
         return view('profile.show', [
             'user' => $user,
             'posts' => $posts,
-            'likedPosts' => $likedPosts
+            'likedPosts' => $likedPosts,
+            'isCurrentUser' => true
+        ]);
+    }
+
+    /**
+     * View another user's profile
+     */
+    public function viewProfile($id): View
+    {
+        // Prevent viewing own profile through this method
+        if (Auth::id() == $id) {
+            return redirect()->route('profile.show');
+        }
+
+        // Find the user or fail
+        $user = User::findOrFail($id);
+        
+        // Get user's posts
+        $posts = $user->posts()->latest()->get();
+        
+        // Get posts the user has liked
+        $likedPosts = Post::whereHas('likes', function($query) use ($user) {
+            $query->where('user_id', $user->id);
+        })->latest()->get();
+
+        // Return view for another user's profile
+        return view('profile.show', [
+            'user' => $user,
+            'posts' => $posts,
+            'likedPosts' => $likedPosts,
+            'isCurrentUser' => false
         ]);
     }
 }

@@ -16,12 +16,14 @@
                     @endif
                     
                     <!-- Edit Profile Button -->
+                    @if($isCurrentUser )
                     <a href="{{ route('profile.edit') }}" class="absolute top-4 right-4 bg-[#314502] text-white px-4 py-2 rounded-full hover:bg-[#434028] transition duration-300 flex items-center">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
                             <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.379-8.379-2.828-2.828z" />
                         </svg>
                         Edit Profile
                     </a>
+                    @endif
                 </div>
 
                 <div class="flex items-center p-4 bg-white bg-opacity-80 backdrop-blur-sm">
