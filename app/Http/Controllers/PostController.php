@@ -97,15 +97,40 @@ class PostController extends Controller
 
     public function share(Request $request, $postId)
     {
-        $share = Share::create([
-            'post_id' => $postId,
-            'user_id' => Auth::id(),
-        ]);
-
-        return response()->json(['success' => true, 'share' => $share]);
+        try {
+            $share = Share::create([
+                'post_id' => $postId,
+                'user_id' => Auth::id(),
+            ]);
+    
+            $post = Post::findOrFail($postId);
+    
+            return response()->json([
+                'success' => true,
+                'share' => $share,
+                'title' => $post->title,
+                'text' => $post->description,
+                'url' => route('posts.show', $postId)
+            ]);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
     }
-
-    // app/Http/Controllers/PostController.php
+    public function show($id)
+    {
+        // Find the post by ID with its related user, likes, and comments
+        $post = Post::with(['user', 'likes', 'comments.user'])
+            ->findOrFail($id);
+    
+        // Get other posts by the same user
+        $posts = Post::where('user_id', $post->user_id)->get();
+    
+        // Pass the post and other posts to the view
+        return view('posts.show', [
+            'post' => $post,
+            'posts' => $posts, // Pass the user's posts
+        ]);
+    }
 
     public function edit(Request $request, $postId)
     {

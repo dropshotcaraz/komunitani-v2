@@ -33,6 +33,7 @@ Route::post('/posts', PostController::class)->name('post.store');
 Route::get('/posts/{postId}/edit', [PostController::class, 'edit'])->name('posts.edit');
 Route::put('/posts/{postId}', [PostController::class, 'update'])->name('posts.update');
 Route::delete('/posts/{postId}', [PostController::class, 'destroy'])->name('posts.destroy');
+Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show');
 
 // For 'PostController' as a resource controller
 Route::post('/posts/{post}/like', [PostController::class, 'like'])->name('posts.like');
