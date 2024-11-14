@@ -72,7 +72,7 @@
                     @endif
                         <div>
                             <h2 class="font-bold text-[#2D3748]">{{ $post->user->name }}</h2>
-                            <p class="text-gray-500 text-sm">{{ $post->created_at->format('d M Y - H:i') }}</p>
+                            <p class="text-gray-500 text-sm">{{ $post->created_at->setTimezone('Asia/Jakarta')->format('d M Y - H:i') }}</p>
                         </div>
                     </div>
                     
@@ -181,7 +181,7 @@
                     @endif
                         <div>
                             <h2 class="font-bold text-[#2D3748]">{{ $likedPost->user->name }}</h2>
-                            <p class="text-gray-500 text-sm">{{ $likedPost->created_at->format('d M Y - H:i') }}</p>
+                            <p class="text-gray-500 text-sm">{{ $likedPost->created_at->setTimezone('Asia/Jakarta')->format('d M Y - H:i') }}</p>
                         </div>
                     </div>
                     
