@@ -4,10 +4,10 @@
 
         <!-- Chat Area -->
         <div class="flex rounded-2xl shadow-xl flex-col w-full h-full flex-grow bg-[#FFFFFF]">
-            <div class="flex rounded-2xl items-center justify-between p-4 bg-[#618805] border-b">
+            <div class="flex rounded-t-2xl items-center justify-between p-4 bg-[#618805] border-b">
                 <div>
                     <p class="font-bold text-[#FFFFFF]">ChatBotani</p>
-                    <p class="text-sm text-gray-300">Active now</p>
+                    <p class="text-sm text-green-300">Aktif</p>
                 </div>
             </div>
             <div class="flex-grow p-4 overflow-y-auto" id="chat" style="max-height: calc(100vh - 200px);">
@@ -19,7 +19,7 @@
                     <div class="loader"></div>
                 </div>
             </div>
-            <div class="p-4 rounded-2xl border-t bg-[#FFFFFF]">
+            <div class="p-4 rounded-b-2xl border-t bg-[#FFFFFF]">
                 <form id="ask" class="flex">
                     <input type="text" placeholder="Write a message..." class="w-full p-3 border rounded-full focus:ring-2 focus:ring-[#314502] outline-none" id="question" name="question" required>
                     <button type="submit" class="ml-2 bg-[#434028] hover:bg-[#314502] text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline">Send</button>
