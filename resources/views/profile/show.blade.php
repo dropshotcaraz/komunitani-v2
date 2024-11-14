@@ -62,7 +62,7 @@
 
                 <!-- Posts Tab -->
                 <div id="posts-tab" class="tab-content bg-white rounded-b-xl shadow-md p-4">
-            @foreach($posts as $post)
+                @foreach($posts as $post)
                 <div class="bg-[#F7F0CF] shadow-lg p-6 rounded-3xl mt-6 mb-6 border border-gray-200">
                     <div class="flex items-center justify-right mb-4">
                     @if (isset($post->user->profile_picture) && $post->user->profile_picture)
@@ -170,9 +170,9 @@
 
 
                 <!-- Likes Tab -->
-            <div id="likes-tab" class="tab-content bg-white rounded-b-xl shadow-md p-4">
+                <div id="likes-tab" class="tab-content active:underline hidden bg-white rounded-b-xl shadow-md p-4">
+                @foreach($likedPosts as $likedPost)
                 <div class="bg-[#F7F0CF] shadow-lg p-6 rounded-3xl mt-6 mb-6 border border-gray-200">
-                    @foreach($likedPosts as $likedPost)
                     <div class="flex items-center justify-right mb-4">
                     @if (isset($likedPost->user->profile_picture) && $likedPost->user->profile_picture)
                         <img src="{{ asset('storage/' . $likedPost->user->profile_picture) }}" alt="{{ $likedPost->user->name }}" class="w-[50px] h-12 rounded-full mr-4 border border-gray-300">
@@ -275,6 +275,7 @@
                         </div>
                     </div>
                     @endforeach
+                </div>
                 </div>
             </div>
         </div>
