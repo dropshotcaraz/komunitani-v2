@@ -291,17 +291,29 @@
 
         <script>
             // Tab switching logic
-            document.querySelectorAll('.tab-button').forEach(button => {
-                button.addEventListener('click', () => {
-                    const tab = button.getAttribute('data-tab');
-                    
-                    document.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
-                    document.querySelectorAll('.tab-content').forEach(t => t.classList.add('hidden'));
-                    
-                    button.classList.add('active');
-                    document.getElementById(`${tab}-tab`).classList.remove('hidden');
+        
+                document.addEventListener('DOMContentLoaded', () => {
+                    const defaultTab = document.querySelector('.tab-button[data-tab="posts"]');
+                    defaultTab.classList.add('active', 'mx-4', 'bg-[#F7F0CF]', 'border', 'border-[#618805]', 'rounded-t-xl');
+                    document.getElementById('posts-tab').classList.remove('hidden');
+
+                    document.querySelectorAll('.tab-button').forEach(button => {
+                        button.addEventListener('click', () => {
+                            const tab = button.getAttribute('data-tab');
+
+                            document.querySelectorAll('.tab-button').forEach(b => {
+                                b.classList.remove('active', 'bg-[#F7F0CF]', 'border', 'border-[#618805]', 'rounded-t-xl');
+                            });
+
+                            document.querySelectorAll('.tab-content').forEach(content => {
+                                content.classList.add('hidden');
+                            });
+
+                            button.classList.add('active', 'bg-[#F7F0CF]', 'border', 'border-[#618805]', 'rounded-t-xl');
+                            document.getElementById(`${tab}-tab`).classList.remove('hidden');
+                        });
+                    });
                 });
-            });
 
             function openImageModal(imageSrc) { 
                 const modal = document.getElementById('imageModal');
