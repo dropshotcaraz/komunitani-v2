@@ -8,7 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
-use App\Models\User;
+use Illuminate\Validation\Rule;
+use App\Models\Post;
 use Illuminate\View\View;
 
 class ProfileController extends Controller
@@ -26,33 +27,60 @@ class ProfileController extends Controller
     /**
      * Update the user's profile information.
      */
-    public function update(ProfileUpdateRequest $request): RedirectResponse
+    public function update(Request $request): RedirectResponse
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,' . auth()->id(),
-            'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Add validation for profile picture
+        $user = $request->user();
+
+        $validatedData = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => [
+                'required', 
+                'string', 
+                'email', 
+                'max:255', 
+                Rule::unique('users')->ignore($user->id)
+            ],
+            'bio' => ['nullable', 'string', 'max:500'],
+            'profile_picture' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
+            'cover_photo' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
         ]);
 
-        $user = auth()->user();
-        
+        // Update basic user information
+        $user->fill([
+            'name' => $validatedData['name'],
+            'email' => $validatedData['email'],
+            'bio' => $validatedData['bio'] ?? null,
+        ]);
+
         // Handle profile picture upload
         if ($request->hasFile('profile_picture')) {
-            // Delete the old picture if it exists
+            // Delete old profile picture
             if ($user->profile_picture) {
-                Storage::delete($user->profile_picture);
+                Storage::disk('public')->delete($user->profile_picture);
             }
             
-            // Store the new picture
-            $path = $request->file('profile_picture')->store('profile_pictures', 'public');
-            $user->profile_picture = $path;
+            // Store new profile picture
+            $profilePicPath = $request->file('profile_picture')->store('profile_pictures', 'public');
+            $user->profile_picture = $profilePicPath;
         }
 
-        $user->name = $request->name;
-        $user->email = $request->email;
+        // Handle cover photo upload
+        if ($request->hasFile('cover_photo')) {
+            // Delete old cover photo
+            if ($user->cover_photo) {
+                Storage::disk('public')->delete($user->cover_photo);
+            }
+            
+            // Store new cover photo
+            $coverPhotoPath = $request->file('cover_photo')->store('cover_photos', 'public');
+            $user->cover_photo = $coverPhotoPath;
+        }
+
+        // Save changes
         $user->save();
 
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+        return Redirect::route('profile.edit')
+            ->with('status', 'profile-updated');
     }
 
     /**
@@ -66,42 +94,46 @@ class ProfileController extends Controller
 
         $user = $request->user();
 
+        // Logout the user
         Auth::logout();
 
+        // Delete user's profile pictures and cover photos
+        if ($user->profile_picture) {
+            Storage::disk('public')->delete($user->profile_picture);
+        }
+        if ($user->cover_photo) {
+            Storage::disk('public')->delete($user->cover_photo);
+        }
+
+        // Delete the user
         $user->delete();
 
+        // Invalidate the session
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
         return Redirect::to('/');
     }
 
-    public function updateProfileInformation(Request $request)
+    /**
+     * Display the user's profile.
+     */
+    public function show()
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,' . auth()->id(),
-            'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Add validation for profile picture
-        ]);
-
-        $user = auth()->user();
+        $user = Auth::user();
         
-        // Handle profile picture upload
-        if ($request->hasFile('profile_picture')) {
-            // Delete the old picture if it exists
-            if ($user->profile_picture) {
-                Storage::delete($user->profile_picture);
-            }
-            
-            // Store the new picture
-            $path = $request->file('profile_picture')->store('profile_pictures', 'public');
-            $user->profile_picture = $path;
-        }
+        // Get user's posts
+        $posts = $user->posts()->latest()->get();
+        
+        // Get posts the user has liked
+        $likedPosts = Post::whereHas('likes', function($query) use ($user) {
+            $query->where('user_id', $user->id);
+        })->latest()->get();
 
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->save();
-
-        return redirect()->route('profile.show')->with('status', 'Profile updated successfully.');
+        return view('profile.show', [
+            'user' => $user,
+            'posts' => $posts,
+            'likedPosts' => $likedPosts
+        ]);
     }
 }

@@ -5,7 +5,7 @@
         </h2>
 
         <p class="mt-1 text-sm text-gray-600">
-            {{ __("Update your account's profile information and email address.") }}
+            {{ __("Update your account's profile information and details.") }}
         </p>
     </header>
 
@@ -48,12 +48,29 @@
         </div>
 
         <div>
+            <x-input-label for="bio" :value="__('Bio')" />
+            <textarea id="bio" name="bio" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" rows="4">{{ old('bio', $user->bio ?? '') }}</textarea>
+            <x-input-error class="mt-2" :messages="$errors->get('bio')" />
+        </div>
+
+        <div>
             <x-input-label for="profile_picture" :value="__('Profile Picture')" />
             <input type="file" id="profile_picture" name="profile_picture" class="mt-1 block w-full" accept="image/*" />
             <x-input-error class="mt-2" :messages="$errors->get('profile_picture')" />
             @if (isset($user->profile_picture) && $user->profile_picture)
                 <div class="mt-2">
-                    <img src="{{ asset('storage/' . $user->profile_picture) }}" alt="Profile Picture" class="max-w-xs rounded-md" />
+                    <img src="{{ asset('storage/' . $user->profile_picture) }}" alt="Profile Picture" class="max-w-xs h-48 object-cover rounded-md" />
+                </div>
+            @endif
+        </div>
+
+        <div>
+            <x-input-label for="cover_photo" :value="__('Cover Photo')" />
+            <input type="file" id="cover_photo" name="cover_photo" class="mt-1 block w-full" accept="image/*" />
+            <x-input-error class="mt-2" :messages="$errors->get('cover_photo')" />
+            @if (isset($user->cover_photo) && $user->cover_photo)
+                <div class="mt-2">
+                    <img src="{{ asset('storage/' . $user->cover_photo) }}" alt="Cover Photo" class="w-full h-64 object-cover rounded-md" />
                 </div>
             @endif
         </div>
