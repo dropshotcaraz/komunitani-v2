@@ -1,6 +1,4 @@
 <x-app-layout>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <div class="justify-center py-6">
         <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
             <main class="col-span-12 md:col-span-9 p-4 mt-0 sm:mt-0 md:mt-0 w-auto">

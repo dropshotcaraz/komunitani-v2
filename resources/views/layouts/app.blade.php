@@ -10,7 +10,8 @@
         <meta name="vite:modulepreload" content="{{ asset('resources/css/app.css') }}">
         <meta name="vite:preload" content="{{ asset('resources/js/app.js') }}">
         <meta name="vite:preload" content="{{ asset('resources/css/app.css') }}">
-        <script src="https://cdn.tailwindcss.com/"></script>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
         <title>{{ config('app.name', 'Komunitani') }}</title>
         <link rel="icon" href="https://i.ibb.co.com/89qxHLW/logokomunitani-chara.png" type="image/x-icon">
