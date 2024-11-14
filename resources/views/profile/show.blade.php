@@ -1,5 +1,5 @@
 <x-app-layout>
-    <div class="container mx-auto max-w-6xl my-6 px-4 py-8">
+    <div class="container bg-gradient-to-r from-[#6FA843] to-[#F7F0CF] rounded-xl mx-auto max-w-6xl my-6 px-4 py-8">
         <div class="relative w-full shadow-xl">
             <!-- Profile Header -->
             <div class="relative bg-gradient-to-r from-[#F7F0CF] to-[#FFFFFF] rounded-xl shadow-lg overflow-hidden">

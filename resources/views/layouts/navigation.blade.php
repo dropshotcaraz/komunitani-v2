@@ -49,7 +49,7 @@
 
                     <x-slot name="content">
                         <x-dropdown-link :href="route('profile.edit')" class="hover:bg-green-100">
-                            {{ __('Profile') }}
+                            {{ __('Profile Setting') }}
                         </x-dropdown-link>
 
                         <!-- Authentication -->

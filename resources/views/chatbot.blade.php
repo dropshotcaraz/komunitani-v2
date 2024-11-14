@@ -1,10 +1,11 @@
 <x-app-layout>
-    <div class="py-8 rounded-xl shadow-xl px-16 h-[620px] flex flex-col bg-[#F7F0CF]">
+    <div class="py-8 shadow-xl px-16 h-[627px] flex flex-col bg-[#F7F0CF]">
         <div class="flex flex-col shadow-xl flex-row w-auto flex-grow"></div>
 
         <!-- Chat Area -->
         <div class="flex rounded-2xl shadow-xl flex-col w-full h-full flex-grow bg-[#FFFFFF]">
-            <div class="flex rounded-t-2xl items-center justify-between p-4 bg-[#618805] border-b">
+            <div class="flex rounded-t-2xl items-center justify-left p-4 bg-[#618805] border-b">
+            <img src="https://i.ibb.co.com/h8h4N6s/chatbot-1.png" class="bg-white h-10 w10 p-2 rounded-[50px] mx-2 " alt="chatbot-icon"></a>
                 <div>
                     <p class="font-bold text-[#FFFFFF]">ChatBotani</p>
                     <p class="text-sm text-green-300">Aktif</p>
