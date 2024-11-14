@@ -6,6 +6,10 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\TimelineController;
 use App\Http\Controllers\MessagesController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ChatbotController;
+
+Route::get('/chatbot', [ChatbotController::class, 'view'])->name('chatbot.index');
+Route::post('/question', [ChatbotController::class, 'index']);
 
 Route::get('/', function () {
     return view('welcome');

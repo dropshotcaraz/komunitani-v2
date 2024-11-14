@@ -21,6 +21,9 @@
                     <x-nav-link :href="route('profile.show')" :active="request()->routeIs('profile.show')" class="hover:text-green-600 transition duration-200">
                         {{ __('Profile') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('chatbot.index')" :active="request()->routeIs('chatbot.index')" class="hover:text-green-600 transition duration-200">
+                        {{ __('Chatbot') }}
+                    </x-nav-link>
                 </div>
             </div>
 
@@ -86,6 +89,9 @@
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('profile.show')" :active="request()->routeIs('profile.show')" class="hover:bg-green-100">
                 {{ __('Profile') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('chatbot.index')" :active="request()->routeIs('chatbot.index')" class="hover:bg-green-100">
+            {{ __('Chatbot') }}
             </x-responsive-nav-link>
         </div>
 
