@@ -1,8 +1,8 @@
 <x-app-layout>
-    <div class="py-12 px-16">
-        <div class="flex flex-col md:flex-row w-auto">
-            <!-- Contacts Sidebar -->
-            <!-- <div class="md:flex flex-col w-full md:w-1/4 bg-white p-4 border-r">
+    <div class="py-8 my-5 rounded-xl shadow-xl px-16 h-[600px] flex flex-col">
+        <div class="flex  flex-col shadow-xl flex-row w-auto flex-grow"></div>
+            <!-- Contacts Sideb
+             <div class="md:flex flex-col w-full md:w-1/4 bg-white p-4 border-r">
                 <input type="text" placeholder="Search Messages" class="mb-4 p-2 border rounded-lg focus:ring-2 focus:ring-green-500 outline-none">
                 <div class="space-y-4">
                     <div class="border-b pb-3 cursor-pointer">
@@ -13,8 +13,8 @@
             </div> -->
 
             <!-- Chat Area -->
-            <div class="flex flex-col w-full h-full flex-grow bg-gray-50">
-                <div class="flex items-center justify-between p-4 bg-gray-100 border-b">
+            <div class="flex rounded-2xl shadow-xl flex-col w-full h-full flex-grow bg-gray-50">
+                <div class="flex rounded-2xl items-center justify-between p-4 bg-gray-100 border-b">
                     <div>
                         <p class="font-bold">ChatBotani</p>
                         <p class="text-sm text-gray-500">Active now</p>
@@ -25,7 +25,7 @@
                         <!-- Chat messages will be appended here -->
                     </div>
                 </div>
-                <div class="p-4 border-t bg-white">
+                <div class="p-4 rounded-2xl border-t bg-white">
                     <form id="ask" class="flex">
                         <input type="text" placeholder="Write a message..." class="w-full p-3 border rounded-full focus:ring-2 focus:ring-green-500 outline-none" id="question" name="question" required>
                         <button type="submit" class="ml-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline">Send</button>
@@ -74,6 +74,7 @@
                     $('#chat').append(userMessage);
                     $('#chat').append(botResponse);
                     $('#chat').scrollTop($('#chat')[0].scrollHeight); // Auto-scroll to the bottom
+                    $('#question').val(''); // Clear the input text
                 },
                 error: function(reject) {
                     refresh();
