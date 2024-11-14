@@ -18,7 +18,7 @@
                     <x-nav-link :href="route('messages')" :active="request()->routeIs('messages')" class="hover:text-green-600 transition duration-200">
                         {{ __('Messages') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('profile.show')" :active="request()->routeIs('profile')" class="hover:text-green-600 transition duration-200">
+                    <x-nav-link :href="route('profile.show')" :active="request()->routeIs('profile.show')" class="hover:text-green-600 transition duration-200">
                         {{ __('Profile') }}
                     </x-nav-link>
                 </div>
@@ -84,7 +84,7 @@
             <x-responsive-nav-link :href="route('messages')" :active="request()->routeIs('messages')" class="hover:bg-green-100">
                 {{ __('Messages') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('profile.show')" :active="request()->routeIs('profile')" class="hover:bg-green-100">
+            <x-responsive-nav-link :href="route('profile.show')" :active="request()->routeIs('profile.show')" class="hover:bg-green-100">
                 {{ __('Profile') }}
             </x-responsive-nav-link>
         </div>
