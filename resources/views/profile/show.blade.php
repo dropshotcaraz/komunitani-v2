@@ -1,4 +1,14 @@
 <x-app-layout>
+    <div class="flex min-h-screen">
+        <!-- Sidebar (if you're using one) -->
+        <aside class="w-64 bg-gray-800 text-white hidden md:block">
+            <!-- Sidebar content goes here -->
+        </aside>
+        
+        <!-- Main Content -->
+        <div class="flex-grow p-6">
+            <div class="max-w-full mx-auto sm:px-6 lg:px-8">
+                <main class="w-full">
     <div class="container mx-auto max-w-6xl my-6 px-4 py-8">
         <div class="relative w-full shadow-xl">
             <!-- Profile Header -->

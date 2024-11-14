@@ -32,4 +32,9 @@ class Post extends Model
     {
         return $this->hasMany(Share::class);
     }
+    public function scopeSearchByContent($query, $search)
+    {
+        return $query->where('content', 'LIKE', "%{$search}%");
+    }
+
 }

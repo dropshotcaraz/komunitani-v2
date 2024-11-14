@@ -4,6 +4,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\PostApiController;
+use App\Http\Controllers\SearchController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -18,3 +19,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/posts/{id}', [PostApiController::class, 'destroy']);
     Route::get('/posts/search', [PostApiController::class, 'search']);
 });
+
+Route::get('/search', [SearchController::class, 'search']);

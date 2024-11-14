@@ -5,6 +5,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\TimelineController;
 use App\Http\Controllers\MessagesController;
+use App\Http\Controllers\SearchController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -46,5 +47,9 @@ Route::get('/dashboard', TimelineController::class)->name('dashboard');
 
 // For 'MessagesController' as an invokable controller
 Route::get('/messages', MessagesController::class)->name('messages');
+
+// For 'SearchController' as an invokable controller
+Route::get('/search', [SearchController::class, 'showSearchPage'])->name('search.page');
+
 
 require __DIR__.'/auth.php';
