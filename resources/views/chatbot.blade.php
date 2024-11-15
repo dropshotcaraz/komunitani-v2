@@ -1,14 +1,14 @@
 <x-app-layout>
-    <div class="py-8 shadow-xl px-16 h-[627px] flex flex-col">
+    <div class="py-8 px-16 h-[627px] flex flex-col">
         <div class="flex flex-col shadow-xl flex-row w-auto flex-grow"></div>
 
         <!-- Chat Area -->
-        <div class="flex rounded-2xl shadow-xl flex-col w-full h-full flex-grow bg-[#FFFFFF]">
+        <div class="flex rounded-2xl shadow-2xl flex-col w-full h-full flex-grow bg-[#FFFFFF]">
             <div class="flex rounded-t-2xl items-center justify-left p-4 bg-[#618805] border-b">
             <img src="https://i.ibb.co.com/h8h4N6s/chatbot-1.png" class="bg-white h-10 w10 p-2 rounded-[50px] mx-2 " alt="chatbot-icon"></a>
                 <div>
                     <p class="font-bold text-[#FFFFFF]">ChatBotani</p>
-                    <p class="text-sm text-green-300">Aktif</p>
+                    <p class="text-sm text-green-300">Ayo Chat Aku!</p>
                 </div>
             </div>
             <div class="flex-grow p-4 overflow-y-auto" id="chat" style="max-height: calc(100vh - 200px);">
@@ -20,7 +20,7 @@
                     <div class="loader"></div>
                 </div>
             </div>
-            <div class="p-4 rounded-b-2xl border-t bg-[#FFFFFF]">
+            <div class="p-4 rounded-b-2xl border-t bg-[#F7F0CF]">
                 <form id="ask" class="flex">
                     <input type="text" placeholder="Write a message..." class="w-full p-3 border rounded-full focus:ring-2 focus:ring-[#314502] outline-none" id="question" name="question" required>
                     <button type="submit" class="ml-2 bg-[#434028] hover:bg-[#314502] text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline">Send</button>
