@@ -57,7 +57,7 @@ class SearchController extends Controller
 
         // Fetch paginated results
         $posts = $query->latest()
-            ->paginate(10)
+            ->paginate(9)
             ->withQueryString();
 
         // Prepare topics for filter dropdown
