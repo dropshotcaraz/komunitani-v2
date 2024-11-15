@@ -1,6 +1,6 @@
 <x-app-layout>
-    <div class="container mx-auto px-4 py-8">
-        <div class="bg-white shadow-lg rounded-lg p-6">
+    <div class="container max-w-6xl  mx-auto px-4 py-8">
+        <div class="bg-[#F7F0CF] rounded-2xl shadow-lg p-6">
             <!-- Search Form -->
             <form id="search-form" method="GET" action="{{ route('search') }}" class="mb-6">
                 <div class="flex">
@@ -14,7 +14,7 @@
                     >
                     <button 
                         type="submit"
-                        class="bg-blue-600 text-white px-4 py-2 rounded-r-md hover:bg-blue-700 transition"
+                        class="bg-[#434028] text-white px-4 py-2 rounded-r-md hover:bg-blue-700 transition"
                     >
                         Search
                     </button>
@@ -88,7 +88,7 @@
             </div>
 
             <!-- Pagination -->
-            <div class="mt-6">
+            <div class="mt-6 ">
                 {{ $posts->appends(request()->query())->links() }}
             </div>
         </div>
