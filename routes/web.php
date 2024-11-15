@@ -7,6 +7,7 @@ use App\Http\Controllers\TimelineController;
 use App\Http\Controllers\MessagesController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ChatbotController;
+use App\Http\Controllers\SearchController;
 
 Route::get('/chatbot', [ChatbotController::class, 'view'])->name('chatbot.index');
 Route::post('/question', [ChatbotController::class, 'index']);
@@ -47,6 +48,27 @@ Route::post('/posts/{post}/share', [PostController::class, 'share'])->name('post
 
 // For 'TimelineController' as an invokable controller
 Route::get('/dashboard', TimelineController::class)->name('dashboard');
+
+// routes/web.php
+
+
+
+Route::controller(SearchController::class)->group(function () {
+    // Main search route with multiple parameter support
+    Route::get('/search', 'index')
+        ->name('search')
+        ->middleware(['web', 'throttle:60,1']); // Optional rate limiting
+
+    // // Autocomplete route
+    // Route::get('/search/autocomplete', 'autocomplete')
+    //     ->name('search.autocomplete')
+    //     ->middleware(['web', 'throttle:30,1']);
+
+    // // Advanced search routes (optional)
+    // Route::get('/search/advanced', 'advancedSearch')
+    //     ->name('search.advanced')
+    //     ->middleware(['web', 'auth']);
+});
 
 // For 'MessagesController' as an invokable controller
 Route::get('/messages', MessagesController::class)->name('messages');
