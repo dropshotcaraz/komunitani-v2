@@ -1,5 +1,5 @@
 <x-app-layout>
-    <div class="py-8 px-16 h-[627px] flex flex-col">
+    <div class="py-8 px-44 h-[627px] flex flex-col">
         <div class="flex flex-col shadow-xl flex-row w-auto flex-grow"></div>
 
         <!-- Chat Area -->

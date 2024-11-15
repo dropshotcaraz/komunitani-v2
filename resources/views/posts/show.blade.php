@@ -1,7 +1,10 @@
 <x-app-layout>
     <div class="py-6">
-@include('posts.partials.post-card')
-</div>
+    
+    @include('posts.partials.post-card')
+    
+    </div>
+    
 <script>
     function hideCommentForm(postId) {
     document.getElementById('commentForm' + postId).classList.add('hidden');
