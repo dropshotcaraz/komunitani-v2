@@ -7,15 +7,17 @@ use App\Http\Controllers\TimelineController;
 use App\Http\Controllers\MessagesController;
 use App\Http\Controllers\SearchController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ChatbotController;
+use App\Http\Controllers\FollowController;
+
+Route::get('/chatbot', [ChatbotController::class, 'view'])->name('chatbot.index');
+Route::post('/question', [ChatbotController::class, 'index']);
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
+// For 'ProfileController'
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::prefix('profile')->group(function () {
         Route::get('/', [ProfileController::class, 'show'])->name('profile.show');
@@ -23,6 +25,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::patch('/', [ProfileController::class, 'update'])->name('profile.update');
         Route::delete('/', [ProfileController::class, 'destroy'])->name('profile.destroy');
     });
+    Route::get('/profile/view/{id}', [ProfileController::class, 'viewProfile'])
+        ->name('profile.view');
+
 });
 
 // For 'PostController' as an invokable controller
@@ -31,6 +36,7 @@ Route::post('/posts', PostController::class)->name('post.store');
 Route::get('/posts/{postId}/edit', [PostController::class, 'edit'])->name('posts.edit');
 Route::put('/posts/{postId}', [PostController::class, 'update'])->name('posts.update');
 Route::delete('/posts/{postId}', [PostController::class, 'destroy'])->name('posts.destroy');
+Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show');
 
 // For 'PostController' as a resource controller
 Route::post('/posts/{post}/like', [PostController::class, 'like'])->name('posts.like');
@@ -51,5 +57,9 @@ Route::get('/messages', MessagesController::class)->name('messages');
 // For 'SearchController' as an invokable controller
 Route::get('/search', [SearchController::class, 'showSearchPage'])->name('search.page');
 
+Route::post('follow/{user}', [FollowController::class, 'follow'])->name('follow');
+Route::delete('/unfollow/{user}', [FollowController::class, 'unfollow'])->name('unfollow');
+Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
+Route::get('/profile/{id}', [ProfileController::class, 'viewProfile'])->name('profile.view');
 
 require __DIR__.'/auth.php';

@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\PostApiController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\FollowController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -21,3 +22,5 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 Route::get('/search', [SearchController::class, 'search']);
+Route::post('/follow/{user}', [FollowController::class, 'follow']);
+Route::delete('/unfollow/{user}', [FollowController::class, 'unfollow']);
