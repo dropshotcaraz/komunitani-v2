@@ -1,38 +1,40 @@
 <x-app-layout>
     <div class="container bg-gradient-to-r from-[#6FA843] to-[#F7F0CF] rounded-xl mx-auto max-w-6xl my-6 px-4 py-8">
         <div class="relative w-full shadow-xl">
-            <!-- Profile Header -->
-            <div class="relative bg-gradient-to-r from-[#F7F0CF] to-[#FFFFFF] rounded-xl shadow-lg overflow-hidden">
-                <!-- Cover Photo -->
-                <div class="h-64 relative">
-                    @if($user->cover_photo)
-                        <img src="{{ asset("storage/{$user->cover_photo}") }}" class="w-full h-full object-cover">
-                    @else
-                        <div class="w-full h-full bg-[#434028] opacity-50 flex items-center justify-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24 text-[#618805]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                            </svg>
-                        </div>
-                    @endif
-                    
-                    <!-- Edit Profile Button -->
-                    @if($isCurrentUser )
-                    <a href="{{ route('profile.edit') }}" class="absolute top-4 right-4 bg-[#314502] text-white px-4 py-2 rounded-full hover:bg-[#434028] transition duration-300 flex items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                            <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.379-8.379-2.828-2.828z" />
-                        </svg>
-                        Edit Profile
-                    </a>
-                    @endif
-                </div>
 
-                <div class="flex items-center p-4 bg-white bg-opacity-80 backdrop-blur-sm">
-                    <div class="relative">
-                        <img src="{{ $user->profile_picture ? asset("storage/{$user->profile_picture}") : asset('images/default-avatar.png') }}" 
-                            class="w-32 h-32 rounded-full border-4 border-[#618805] object-cover shadow-lg">
+    <!-- Profile Header -->
+        <div class="relative bg-gradient-to-r from-[#F7F0CF] to-[#FFFFFF] rounded-xl shadow-lg overflow-hidden">
+            <!-- Cover Photo -->
+            <div class="h-64 relative">
+                @if($user->cover_photo)
+                    <img src="{{ asset("storage/{$user->cover_photo}") }}" class="w-full h-full object-cover">
+                @else
+                    <div class="w-full h-full bg-[#434028] opacity-50 flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24 text-[#618805]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                        </svg>
                     </div>
-                    
-                    <div class="ml-6 flex-grow">
+                @endif
+                
+                <!-- Edit Profile Button -->
+                @if($isCurrentUser )
+                <a href="{{ route('profile.edit') }}" class="absolute top-4 right-4 bg-[#314502] text-white px-4 py-2 rounded-full hover:bg-[#434028] transition duration-300 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.379-8.379-2.828-2.828z" />
+                    </svg>
+                    Edit Profile
+                </a>
+                @endif
+            </div>
+
+            <div class="flex items-center p-4 bg-white bg-opacity-80 backdrop-blur-sm">
+                <div class="relative">
+                    <img src="{{ $user->profile_picture ? asset("storage/{$user->profile_picture}") : asset('images/default-avatar.png') }}" 
+                        class="w-32 h-32 rounded-full border-4 border-[#618805] object-cover shadow-lg">
+                </div>
+                
+                <div class="ml-6 flex-grow flex justify-between items-center">
+                    <div>
                         <h1 class="text-3xl font-bold text-[#434028]">{{ $user->name }}</h1>
                         <p class="text-[#618805]">{{ $user->email }}</p>
                         <p class="text-gray-700 mt-2 italic flex items-center">
@@ -41,9 +43,28 @@
                             </svg>
                             {{ $user->bio ?? 'No bio yet' }}
                         </p>
+                        <div class="mt-4">
+                            <span class="font-bold">{{ $user->followers_count }} Followers</span> |
+                            <span class ="font-bold">{{ $user->following_count }} Following</span>
+                        </div>
+                    </div>
+                    <div class="ml-4 pr-6">
+                        @if(Auth::check() && !Auth::user()->isFollowing($user->id) && Auth::user()->id !== $user->id)
+                            <form action="{{ route('follow', $user->id) }}" method="POST">
+                                @csrf
+                                <button type="submit" class="bg-[#6FA843] text-white px-4 py-2 rounded-lg hover:bg-[#578432] transition">Follow</button>
+                            </form>
+                        @elseif(Auth::check() && Auth::user()->isFollowing($user->id) && Auth::user()->id !== $user->id)
+                            <form action="{{ route('unfollow', $user->id) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition">Unfollow</button>
+                            </form>
+                        @endif
                     </div>
                 </div>
             </div>
+        </div>
 
             <!-- Profile Tabs -->
             <div class="mt-8">

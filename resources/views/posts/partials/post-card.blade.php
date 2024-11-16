@@ -17,12 +17,18 @@
                                 <h2 class="font-bold text-[#2D3748]">{{ $post->user->name }}</h2>
                             </a>
                             <p class="text-gray-500 text-sm">{{ $post->created_at->setTimezone('Asia/Jakarta')->format('d M Y - H:i') }}</p>
+                            @if(!Auth::user()->isFollowing($post->user->id) && Auth::user()->id !== $post->user->id)
+                            <form action="{{ route('follow', $post->user->id) }}" method="POST" class="inline">
+                                @csrf
+                                <button type="submit" class="mt-2 bg-[#6FA843] text-white px-4 py-1 rounded hover:bg-[#578432] transition">Follow</button>
+                            </form>
+                            @endif
                         </div>
                     </div>
                     
                         <!-- Topic and Edit/Delete Buttons -->
                         <div class="flex items-center justify-between mb-2">
-                            <p class="font-bold text-xl text-[#6FA843]">Topik: {{ $post->topic ?? 'Umum' }}</p>
+                        <p class="font-bold text-xl text-[#6FA843]">Topik: {{ $post->topic ?? 'Umum' }}</p>
                             @if(auth()->check() && (auth()->user()->id === $post->user_id || auth()->user()->is_admin)) 
                             <div class="flex space-x-4">
                                 <a href="{{ route('posts.edit', $post->id) }}" class="flex items-center text-blue-500 hover:text-blue-600 transition" title="Edit">
@@ -47,7 +53,7 @@
                         </div>
 
                         <!-- Post Content -->
-                        <p class="text-gray-700">{{ $post->content }}</p>
+                        <p class="text-gray-700 text-xl">{{ $post->content }}</p>
                         @if($post->image_path)
                         <img src="{{ asset('storage/public/'.$post->image_path) }}" alt="Post Image" class="w-[300px] sm:w-full h-auto mt-4 rounded-lg border border-[#434028] cursor-pointer" onclick="openImageModal('{{ asset('storage/public/'.$post->image_path) }}')">
                         @endif
@@ -206,6 +212,29 @@ function closeImageModal() {
     }, 500); // Match the duration of the CSS transition
 }
 
-
-
+document.addEventListener('DOMContentLoaded', function() {
+    // Follow button functionality
+    document.querySelectorAll('.follow-btn').forEach(button => {
+        button.addEventListener('click', function(event) {
+            event.preventDefault();
+            const userId = this.getAttribute('data-user-id');
+            fetch(`/api/follow/${userId}`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Content-Type': 'application/json',
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert(data.message);
+                    location.reload(); // Reload the page to update the follow button
+                } else {
+                    alert(data.message || 'Failed to follow the user.');
+                }
+            });
+        });
+    });
+});
 </script>
