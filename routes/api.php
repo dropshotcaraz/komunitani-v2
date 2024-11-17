@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\PostApiController;
 use App\Http\Controllers\FollowController;
-use App\Http\Controllers\PostController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
@@ -39,24 +38,24 @@ Route::middleware('auth:sanctum')->group(function () {
 
 // <!--masih blm nyambung ke postingan ini gw naro doang-->
 
-// Route::middleware(['auth:sanctum'])->group(function () {
-//         // Basic post operations
-//         Route::post('/posts', PostController::class)->name('api.posts.store');
-//         Route::get('/posts/{id}', [PostController::class, 'show'])->name('api.posts.show');
-//         Route::get('/posts/{postId}/edit', [PostController::class, 'edit'])->name('api.posts.edit');
-//         Route::patch('/posts/{postId}', [PostController::class, 'update'])->name('api.posts.update');
-//         Route::delete('/posts/{postId}', [PostController::class, 'destroy'])->name('api.posts.destroy');
+Route::middleware(['auth:sanctum'])->group(function () {
+    // Basic post operations
+    
+    Route::get('/v/posts', [PostApiController::class,'index']);
+    Route::post('/v/posts', [PostApiController::class,'store']);
+    Route::get('/v/posts/{id}', [PostApiController::class, 'show']);
+    Route::put('/v/posts/{postId}', [PostApiController::class, 'update']);
+    Route::delete('/v/posts/{postId}', [PostApiController::class, 'destroy']);
 
-//         // Post interactions
-//         Route::post('/posts/{postId}/like', [PostController::class, 'like'])->name('api.posts.like');
-//         Route::post('/posts/{postId}/share', [PostController::class, 'share'])->name('api.posts.share');
+    // Post interactions
+    Route::post('/v/posts/{postId}/like', [PostApiController::class, 'like']);
+    Route::post('/v/posts/{postId}/share', [PostApiController::class, 'share']);
 
-//         // Comment operations
-//         Route::post('/posts/{postId}/comment', [PostController::class, 'comment'])->name('api.posts.comment');
-//         Route::get('/comments/{commentId}/edit', [PostController::class, 'commentEdit'])->name('api.comments.edit');
-//         Route::patch('/comments/{commentId}', [PostController::class, 'commentUpdate'])->name('api.comments.update');
-//         Route::delete('/comments/{commentId}', [PostController::class, 'commentDestroy'])->name('api.comments.destroy');
-// });
+    // Comment operations
+    Route::post('/v/posts/{postId}/comment', [PostApiController::class, 'comment']);
+    Route::put('/v/comments/{commentId}', [PostApiController::class, 'commentUpdate']);
+    Route::delete('/v/comments/{commentId}', [PostApiController::class, 'commentDestroy']);
+});
 
 
 Route::post('/follow/{user}', [FollowController::class, 'follow']);
