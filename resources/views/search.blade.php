@@ -26,13 +26,13 @@
                     <select 
                         name="topic" 
                         id="topic-filter" 
-                        class="px-6 py-1 border border-gray-300 rounded"
+                        class="px-4 py-1 border border-gray-300 rounded"
                     >
-                        <option value="">All Topics</option>
+                        <option value="">Topik</option>
                         @foreach($availableTopics as $topic)
                             <option 
                                 value="{{ $topic }}" 
-                                {{ request('Topik') == $topic ? 'selected' : '' }}
+                                {{ request('topic') == $topic ? 'selected' : '' }}
                             >
                                 {{ $topic }}
                             </option>
@@ -43,13 +43,13 @@
                     <select 
                         name="post_type" 
                         id="post-type-filter" 
-                        class="px-6 py-1 border border-gray-300 rounded"
+                        class="px-4 py-1 border border-gray-300 rounded"
                     >
-                        <option value="">All Post Types</option>
+                        <option value="">Tipe Post</option>
                         @foreach($availablePostTypes as $postType)
                             <option 
                                 value="{{ $postType }}" 
-                                {{ request('Tipe Post') == $postType ? 'selected' : '' }}
+                                {{ request('post_type') == $postType ? 'selected' : '' }}
                             >
                                 {{ $postType }}
                             </option>
