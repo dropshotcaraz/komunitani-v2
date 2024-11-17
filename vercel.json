@@ -1,30 +1,32 @@
 {
     "version": 2,
-      "framework": null,
+    "framework": null,
     "functions": {
-        "api/index.php": { "runtime": "vercel-php@0.7.3" },
-        "maxDuration": 60
+        "api/index.php": { "runtime": "vercel-php@0.7.3" }
     },
-    "routes": [{
-        "src": "/(.*)",
-        "dest": "/api/index.php"
-        },       
+    "maxDuration": 60,
+    "routes": [
         {
-        "src": "/images/(.*)",
-        "dest": "public/cover_photos/"
+            "src": "/(.*)",
+            "dest": "/api/index.php"
+        },
+        {
+            "src": "/images/(.*)",
+            "dest": "public/cover_photos/"
         },
         {
             "src": "/images/(.*)",
             "dest": "public/profile_pictures/"
-            },
-            {
-                    "src": "/images/(.*)",
-                    "dest": "public/public/posts"
-                    },
+        },
+        {
+            "src": "/images/(.*)",
+            "dest": "public/public/posts"
+        },
         {
             "src": "/build/(.*)",
             "dest": "/build/$1"
-        }],
+        }
+    ],
     "env": {
         "APP_ENV": "production",
         "APP_DEBUG": "true",
@@ -36,7 +38,6 @@
         "APP_ROUTES_CACHE": "/tmp/routes.php",
         "APP_SERVICES_CACHE": "/tmp/services.php",
         "VIEW_COMPILED_PATH": "/tmp",
-
         "CACHE_DRIVER": "array",
         "LOG_CHANNEL": "stderr",
         "SESSION_DRIVER": "cookie"
