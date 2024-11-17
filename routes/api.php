@@ -28,6 +28,7 @@ Route::middleware('auth:sanctum')->group(function () {
 // Public routes
 Route::post('/v/register', [AuthController::class, 'register']);
 Route::post('/v/login', [AuthController::class, 'login']);
+
 // Protected routes
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
