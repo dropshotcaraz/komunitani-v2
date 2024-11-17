@@ -9,14 +9,14 @@ use Illuminate\Database\Eloquent\Builder;
 class Post extends Model
 {
     use HasFactory;
-
     protected $fillable = [
         'user_id',
+        'title',      // New title field
         'content',
-        'image_path', // Add image path
-        'topic'       // Add topic
+        'image_path',
+        'topic',
+        'post_type'   // New post_type field
     ];
-
     public function user()
     {
         return $this->belongsTo(User::class);

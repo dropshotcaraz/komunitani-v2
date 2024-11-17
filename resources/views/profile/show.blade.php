@@ -29,7 +29,7 @@
 
             <div class="flex items-center p-4 bg-white bg-opacity-80 backdrop-blur-sm">
                 <div class="relative">
-                    <img src="{{ $user->profile_picture ? asset("storage/{$user->profile_picture}") : asset('images/default-avatar.png') }}" 
+                    <img src="{{ $user->profile_picture ? asset("storage/{$user->profile_picture}") : asset('https://xsgames.co/randomusers/avatar.php?g=pixel') }}" 
                         class="w-32 h-32 rounded-full border-4 border-[#618805] object-cover shadow-lg">
                 </div>
                 

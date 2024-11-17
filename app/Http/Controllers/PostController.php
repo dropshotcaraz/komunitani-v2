@@ -19,10 +19,12 @@ class PostController extends Controller
 {
     public function __invoke(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+    $validator = Validator::make($request->all(), [
+            'title' => 'required|string|max:255', // Add validation for title
             'content' => 'required|string|max:500',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'topic' => 'nullable|string|max:100'
+            'topic' => 'nullable|string|max:100',
+            'post_type' => 'nullable|string|max:50' // Add validation for post type
         ]);
     
         if ($validator->fails()) {
@@ -47,9 +49,11 @@ class PostController extends Controller
         try {
             $post = Post::create([
                 'user_id' => Auth::id(),
+                'title' => $request->input('title'), // Create post with title
                 'content' => $request->input('content'),
                 'image_path' => $imagePath,
-                'topic' => $request->input('topic')
+                'topic' => $request->input('topic'),
+                'post_type' => $request->input('post_type') // Create post with post type
             ]);
     
             return redirect()->back()->with('success', 'Post created successfully');
@@ -58,6 +62,7 @@ class PostController extends Controller
             return redirect()->back()->with('error', 'Failed to create post');
         }
     }
+    
     public function like(Request $request, $postId)
     {
         $like = Like::where('post_id', $postId)->where('user_id', Auth::id())->first();
@@ -146,27 +151,29 @@ class PostController extends Controller
     public function update(Request $request, $postId)
     {
         $request->validate([
+            'title' => 'required|string|max:255',
             'content' => 'required|string|max:500',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'topic' => 'nullable|string|max:100'
+            'topic' => 'nullable|string|max:100',
+            'post_type' => 'nullable|string|max:50' // Add validation for post type
         ]);
-
+    
         $post = Post::findOrFail($postId);
-
+    
         // Ensure the user is authorized to update the post
         if ($post->user_id !== Auth::id()) {
             return redirect()->back()->with('error', 'Unauthorized action.');
         }
-
+    
         $imagePath = $post->image_path; // Keep the existing image path
-
+    
         // Check if the remove_image input is set, indicating the image should be removed
         if ($request->has('remove_image') && $imagePath) {
             // Delete the image from storage
             Storage::disk('public')->delete($imagePath);
             $imagePath = null; // Set image path to null for database update
         }
-
+    
         // Handle image upload if a new image is uploaded
         if ($request->hasFile('image')) {
             try {
@@ -174,7 +181,7 @@ class PostController extends Controller
                 $imageName = time() . '.' . $image->getClientOriginalExtension();
                 $newImagePath = $image->storeAs('public/posts', $imageName, 'public');
                 $imagePath = str_replace('public/', '', $newImagePath);
-
+    
                 // Delete the old image if a new one is uploaded and if it exists
                 if ($post->image_path) {
                     Storage::disk('public')->delete($post->image_path);
@@ -184,14 +191,16 @@ class PostController extends Controller
                 return redirect()->back()->with('error', 'Image upload failed');
             }
         }
-
-        // Update the post with new content and image path
+    
+        // Update the post with new content, image path, title, and post type
         $post->update([
+            'title' => $request->input('title'), // Update title
             'content' => $request->input('content'),
             'image_path' => $imagePath,
-            'topic' => $request->input('topic')
+            'topic' => $request->input('topic'),
+            'post_type' => $request->input('post_type') // Update post type
         ]);
-
+    
         return redirect()->back()->with('success', 'Post updated successfully');
     }
 

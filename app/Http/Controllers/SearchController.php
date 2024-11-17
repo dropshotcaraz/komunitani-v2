@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
 class SearchController extends Controller
@@ -15,6 +14,7 @@ class SearchController extends Controller
         $validatedData = $request->validate([
             'query' => 'nullable|string|max:255',
             'topic' => 'nullable|string|max:100',
+            'post_type' => 'nullable|string|max:100', // Validation rule for post type
             'date_filter' => 'nullable|in:today,week,month',
             'page' => 'nullable|integer|min:1'
         ]);
@@ -22,11 +22,12 @@ class SearchController extends Controller
         // Start with base query
         $query = Post::with('user');
 
-        // Search by query (content or topic)
+        // Search by query (content, title, or topic)
         if ($request->filled('query')) {
             $searchTerm = $request->input('query');
             $query->where(function($q) use ($searchTerm) {
                 $q->where('content', 'LIKE', "%{$searchTerm}%")
+                  ->orWhere('title', 'LIKE', "%{$searchTerm}%") // Include title in the search
                   ->orWhere('topic', 'LIKE', "%{$searchTerm}%");
             });
         }
@@ -34,6 +35,11 @@ class SearchController extends Controller
         // Filter by specific topic if provided
         if ($request->filled('topic')) {
             $query->where('topic', $request->input('topic'));
+        }
+
+        // Filter by specific post type if provided
+        if ($request->filled('post_type')) {
+            $query->where('post_type', $request->input('post_type'));
         }
 
         // Date filtering
@@ -60,11 +66,16 @@ class SearchController extends Controller
             ->paginate(9)
             ->withQueryString();
 
-        // Prepare topics for filter dropdown
+        // Prepare topics and post types for filter dropdowns
         $availableTopics = Post::select('topic')
             ->distinct()
             ->whereNotNull('topic')
             ->pluck('topic');
+
+        $availablePostTypes = Post::select('post_type')
+            ->distinct()
+            ->whereNotNull('post_type')
+            ->pluck('post_type');
 
         // AJAX response
         if ($request->ajax() || $request->wantsJson()) {
@@ -72,8 +83,10 @@ class SearchController extends Controller
                 'posts' => $posts->map(function ($post) {
                     return [
                         'id' => $post->id,
+                        'title' => $post->title, // Include title in the response
                         'content' => $post->content,
                         'topic' => $post->topic,
+                        'post_type' => $post->post_type, // Include post type in the response
                         'user' => $post->user->name,
                         'image' => $post->image_path 
                             ? asset('storage/' . $post->image_path) 
@@ -86,7 +99,8 @@ class SearchController extends Controller
                     'last_page' => $posts->lastPage(),
                     'total' => $posts->total(),
                 ],
-                'available_topics' => $availableTopics
+                'available_topics' => $availableTopics,
+                'available_post_types' => $availablePostTypes // Include available post types in the response
             ]);
         }
 
@@ -95,7 +109,9 @@ class SearchController extends Controller
             'posts' => $posts,
             'searchTerm' => $request->input('query'),
             'selectedTopic' => $request->input('topic'),
+            'selectedPostType' => $request->input('post_type'), // Pass selected post type to the view
             'availableTopics' => $availableTopics,
+            'availablePostTypes' => $availablePostTypes, // Pass available post types to the view
             'dateFilter' => $request->input('date_filter')
         ]);
     }
