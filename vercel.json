@@ -18,10 +18,6 @@
             "dest": "public/profile_pictures/"
             },
             {
-                "src": "/images/(.*)",
-                "dest": "public/cover_photos/"
-                },
-                {
                     "src": "/images/(.*)",
                     "dest": "public/public/posts"
                     },
