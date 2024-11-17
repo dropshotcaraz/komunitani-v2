@@ -14,15 +14,15 @@
         },
         {
             "src": "/images/(.*)",
-            "dest": "public/cover_photos/"
+            "dest": "public/storage/cover_photos/"
         },
         {
             "src": "/images/(.*)",
-            "dest": "public/profile_pictures/"
+            "dest": "public/storage/profile_pictures/"
         },
         {
             "src": "/images/(.*)",
-            "dest": "public/public/posts"
+            "dest": "public/storage/public/posts"
         },
         {
             "src": "/build/(.*)",
