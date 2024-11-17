@@ -19,7 +19,7 @@
     "env": {
         "APP_ENV": "production",
         "APP_DEBUG": "true",
-        "APP_URL": "https://yourprojectdomain.com",
+        "APP_URL": "https://komunitani-v2.vercel.app/",
         "APP_KEY": "base64:cxEfVnWNXHVr9uk/pqQ8K9jGIwQjv5Ek4RaBdrmnje0=",
         "APP_CONFIG_CACHE": "/tmp/config.php",
         "APP_EVENTS_CACHE": "/tmp/events.php",
