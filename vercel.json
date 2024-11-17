@@ -10,8 +10,20 @@
         },       
         {
         "src": "/images/(.*)",
-        "dest": "public/images/"
+        "dest": "public/cover_photos/"
         },
+        {
+            "src": "/images/(.*)",
+            "dest": "public/profile_pictures/"
+            },
+            {
+                "src": "/images/(.*)",
+                "dest": "public/cover_photos/"
+                },
+                {
+                    "src": "/images/(.*)",
+                    "dest": "public/public/posts"
+                    },
         {
             "src": "/build/(.*)",
             "dest": "/build/$1"
