@@ -52,7 +52,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://localhost'),
+    'url' => env('APP_URL', 'https://komunitani-v2.vercel.app/'),
 
     /*
     |--------------------------------------------------------------------------
