@@ -43,7 +43,7 @@
                     <select 
                         name="post_type" 
                         id="post-type-filter" 
-                        class="px-4 py-1 border border-gray-300 rounded"
+                        class="px-6 py-1 border border-gray-300 rounded"
                     >
                         <option value="">Tipe Post</option>
                         @foreach($availablePostTypes as $postType)
