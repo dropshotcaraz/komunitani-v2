@@ -11,10 +11,12 @@
                         <textarea id="postTextarea" name="content" placeholder="Tulis pertanyaan atau informasi di sini" class="w-full bg-gray-50 p-3 rounded-lg outline-none border border-gray-300 focus:border-[#6FA843]"></textarea>
                         <div class="flex items-center space-x-3">
                             <select id="topicSelect" name="topic" class="border border-gray-300 py-2 px-8 rounded-lg bg-gray-50 focus:border-[#6FA843]">
-                                <option value="">Pilih Topik</option>
-                                <option value="Teknologi">Teknologi</option>
-                                <option value="Pendidikan">Pendidikan</option>
-                                <option value="Kesehatan">Kesehatan</option>
+                                <option value="Pertanian Umum">Pertanian Umum</option>
+                                <option value="Teknik Pertanian">Teknik Pertanian</option>
+                                <option value="Tanaman Pangan">Tanaman Pangan</option>
+                                <option value="Hortikultura">Hortikultura</option>
+                                <option value="Perkebunan">Perkebunan</option>
+                                <option value="Peternakan">Peternakan</option>
                             </select>
                             <button type="button" onclick="document.getElementById('imageUpload').click()" class="flex items-center text-gray-500 hover:text-[#6FA843] transition">
                                 <svg class="bg-white rounded-xl" width="40px" height="40px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
