@@ -37,6 +37,10 @@ Route::put('/posts/{postId}', [PostController::class, 'update'])->name('posts.up
 Route::delete('/posts/{postId}', [PostController::class, 'destroy'])->name('posts.destroy');
 Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show');
 
+Route::get('/symlink', function () {
+    Artisan::call('storage:link');
+});
+
 // For 'PostController' as a resource controller
 Route::post('/posts/{post}/like', [PostController::class, 'like'])->name('posts.like');
 Route::post('/posts/{post}/comment', [PostController::class, 'comment'])->name('posts.comment');
