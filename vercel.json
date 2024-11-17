@@ -7,18 +7,15 @@
     },
     "routes": [{
         "src": "/(.*)",
-        "dest": "/api/index.php",
-        "maxDuration": 60
+        "dest": "/api/index.php"
         },       
         {
         "src": "/images/(.*)",
-        "dest": "public/cover_photos/",
-        "maxDuration": 60
+        "dest": "public/cover_photos/"
         },
         {
             "src": "/images/(.*)",
-            "dest": "public/profile_pictures/",
-            "maxDuration": 60
+            "dest": "public/profile_pictures/"
             },
             {
                 "src": "/images/(.*)",
@@ -26,8 +23,7 @@
                 },
                 {
                     "src": "/images/(.*)",
-                    "dest": "public/public/posts",
-                    "maxDuration": 60
+                    "dest": "public/public/posts"
                     },
         {
             "src": "/build/(.*)",
