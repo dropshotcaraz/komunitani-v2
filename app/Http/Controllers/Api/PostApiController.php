@@ -18,7 +18,7 @@ class PostApiController extends Controller
     {
         $posts = Post::with(['user', 'likes', 'comments.user'])
             ->latest()
-            ->paginate(10);
+            ->get();
             
         return response()->json(['success' => true, 'data' => $posts]);
     }
