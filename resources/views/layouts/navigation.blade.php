@@ -27,6 +27,18 @@
                     <x-nav-link :href="route('search')" :active="request()->routeIs('search')" class="text-[#91972A] hover:text-[#B6C454] transition duration-200">
                         {{ __('Search') }}
                     </x-nav-link>
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <x-nav-link :href="route('logout')"
+                                onclick="confirmLogout(event)"
+                                class="group relative inline-flex items-center rounded-lg px-4 py-2 text-red-600 transition-all duration-200 hover:text-white hover:bg-red-500 hover:shadow-lg active:scale-95">
+                            <span>{{ __('Log Out') }}</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="ml-2 h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                            </svg>
+                            <div class="absolute inset-0 -z-10 rounded-lg bg-gradient-to-br from-red-400 to-red-600 opacity-0 blur transition-opacity duration-200 group-hover:opacity-30"></div>
+                        </x-nav-link>
+                    </form>
                 </div>
             </div>
 
@@ -99,6 +111,17 @@
             <x-responsive-nav-link :href="route('search')" :active="request()->routeIs('search')" class="hover:bg-[#D8D174]">
             {{ __('Search') }}
             </x-responsive-nav-link>
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <x-responsive-nav-link :href="route('logout')"
+                    onclick="confirmLogout(event)"
+                    class="group relative inline-flex items-center w-full px-4 py-2 text-red-600 transition-all duration-200 hover:text-white hover:bg-red-500">
+                    <span>{{ __('Log Out') }}</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="ml-2 h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                    </svg>
+                </x-responsive-nav-link>
+            </form>
         </div>
 
         <!-- Responsive Settings Options -->
@@ -141,5 +164,48 @@
                 }
             });
         });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function confirmLogout(event) {
+            event.preventDefault();
+            const form = event.target.closest('form');
+            
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You will be logged out of your session",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#91972A',
+                cancelButtonColor: '#6B7280',
+                confirmButtonText: 'Yes, logout',
+                cancelButtonText: 'Cancel',
+                background: '#F6FEDB',
+                borderRadius: '1rem',
+                customClass: {
+                    popup: 'rounded-xl shadow-xl border border-[#E6D3A3]'
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    if (form) {
+                        form.submit();
+                    } else {
+                        // For dropdown and responsive menu items that might not be in a form
+                        const logoutForm = document.createElement('form');
+                        logoutForm.method = 'POST';
+                        logoutForm.action = '{{ route("logout") }}';
+                        
+                        const csrfToken = document.createElement('input');
+                        csrfToken.type = 'hidden';
+                        csrfToken.name = '_token';
+                        csrfToken.value = '{{ csrf_token() }}';
+                        
+                        logoutForm.appendChild(csrfToken);
+                        document.body.appendChild(logoutForm);
+                        logoutForm.submit();
+                    }
+                }
+            });
+        }
     </script>
 </nav>
