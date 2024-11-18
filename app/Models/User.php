@@ -19,11 +19,11 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name', 
-        'email', 
-        'password', 
-        'bio', 
-        'profile_picture', 
+        'name',
+        'email',
+        'password',
+        'bio',
+        'profile_picture',
         'cover_photo'
     ];
 
@@ -91,5 +91,20 @@ class User extends Authenticatable
     public function getFollowingCountAttribute()
     {
         return $this->follows()->count();
+    }
+
+    public function senderMessages()
+    {
+        return $this->hasMany(Message::class, 'sender_id');
+    }
+
+    public function receiverMessages()
+    {
+        return $this->hasMany(Message::class, 'receiver_id');
+    }
+
+    public function latestReceiverMessage()
+    {
+        return $this->hasOne(Message::class, 'receiver_id')->latestOfMany();
     }
 }

@@ -18,7 +18,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// For 'ProfileController' 
+// For 'ProfileController'
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::prefix('profile')->group(function () {
         Route::get('/', [ProfileController::class, 'show'])->name('profile.show');
@@ -71,5 +71,9 @@ Route::controller(SearchController::class)->group(function () {
 
 // For 'MessagesController' as an invokable controller
 Route::get('/messages', MessagesController::class)->name('messages');
+Route::get('/messages/{userId}', [MessagesController::class, 'show'])->name('messages.show')
+    ->whereNumber('userId');
+Route::post('/messages/{userId}', [MessagesController::class, 'store'])->name('messages.show')
+    ->whereNumber('userId');
 
 require __DIR__ . '/auth.php';
