@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ChatbotController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\FollowController;
+use App\Http\Controllers\UserController;
 
 Route::get('/chatbot', [ChatbotController::class, 'view'])->name('chatbot.index');
 Route::post('/question', [ChatbotController::class, 'index']);
@@ -50,6 +51,8 @@ Route::post('/posts/{post}/share', [PostController::class, 'share'])->name('post
 Route::get('/comments/{commentId}/edit', [PostController::class, 'commentEdit'])->name('comments.edit');
 Route::put('/comments/{commentId}', [PostController::class, 'commentUpdate'])->name('comments.update');
 Route::delete('/comments/{commentId}', [PostController::class, 'commentDestroy'])->name('comments.destroy');
+
+Route::resource('users', UserController::class);
 
 // For 'TimelineController' as an invokable controller
 Route::get('/dashboard', TimelineController::class)->name('dashboard');

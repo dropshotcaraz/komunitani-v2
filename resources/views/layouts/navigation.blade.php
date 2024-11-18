@@ -36,6 +36,16 @@
                         class="text-[#91972A] hover:text-[#B6C454] transition duration-200">
                         {{ __('Search') }}
                     </x-nav-link>
+                    @auth
+                        @if (auth()->user()->name === 'Admin')
+                            <x-nav-link :href="route('users.index')" :active="request()->routeIs('users.index')"
+                                class="text-[#91972A] hover:text-[#B6C454] transition duration-200">
+                                {{ __('Users') }}
+                            </x-nav-link>
+                        @endif
+                    @endauth
+
+
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
                         <x-nav-link :href="route('logout')" onclick="confirmLogout(event)"
@@ -137,6 +147,15 @@
             <x-responsive-nav-link :href="route('search')" :active="request()->routeIs('search')" class="hover:bg-[#D8D174]">
                 {{ __('Search') }}
             </x-responsive-nav-link>
+            @auth
+                @if (auth()->user()->name === 'Admin')
+                    <x-nav-link :href="route('users.index')" :active="request()->routeIs('users.index')"
+                        class="text-[#91972A] hover:text-[#B6C454] transition duration-200">
+                        {{ __('Users') }}
+                    </x-nav-link>
+                @endif
+            @endauth
+
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
                 <x-responsive-nav-link :href="route('logout')" onclick="confirmLogout(event)"
