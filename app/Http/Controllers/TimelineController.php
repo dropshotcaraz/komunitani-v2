@@ -12,19 +12,22 @@ class TimelineController extends Controller
     public function __invoke(): View
     {
         // Cek apakah ini untuk halaman 'dashboard' atau 'followingpage'
-        // Jika untuk halaman dashboard, tampilkan semua posts
         if (request()->routeIs('dashboard')) {
-            $posts = Post::latest()->get();  // Menampilkan semua posts
+            // Menampilkan semua posts untuk dashboard
+            $posts = Post::latest()->get();
         } else {
-            // Jika untuk halaman followingpage, tampilkan posts dari pengguna yang diikuti
+            // Untuk halaman 'followingpage'
             if (auth()->check()) {
                 $user = auth()->user();
-                $followingUserIds = $user->follows()->pluck('user_id'); // Ambil id pengguna yang diikuti oleh pengguna yang sedang login
+                // Ambil id pengguna yang diikuti dan tambahkan id pengguna yang sedang login
+                $followingUserIds = $user->follows()->pluck('user_id')->toArray();
+                $followingUserIds[] = $user->id; // Tambahkan id pengguna yang sedang login
 
-                // Tampilkan post hanya dari pengguna yang diikuti
+                // Tampilkan post dari pengguna yang diikuti dan pengguna yang login
                 $posts = Post::whereIn('user_id', $followingUserIds)->latest()->get();
             } else {
-                $posts = collect();  // Jika pengguna belum login, kembalikan koleksi kosong
+                // Jika pengguna belum login, kembalikan koleksi kosong
+                $posts = collect();
             }
         }
 
