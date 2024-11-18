@@ -34,11 +34,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/v/posts/{id}', [PostApiController::class, 'show']);
     Route::put('/v/posts/{postId}', [PostApiController::class, 'update']);
     Route::delete('/v/posts/{postId}', [PostApiController::class, 'destroy']);
-
     // like n shere
     Route::post('/v/posts/{postId}/like', [PostApiController::class, 'like']);
     Route::post('/v/posts/{postId}/share', [PostApiController::class, 'share']);
-
     // komen pk api
     Route::post('/v/posts/{postId}/comment', [PostApiController::class, 'comment']);
     Route::put('/v/comments/{commentId}', [PostApiController::class, 'commentUpdate']);
@@ -49,7 +47,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/v/profile', [ProfileApiController::class, 'show']);
     Route::get('/v/profile/{id}', [ProfileApiController::class, 'viewProfile']);
-    Route::post('/v/profile', [ProfileApiController::class, 'update']);
+    Route::put('/v/profile', [ProfileApiController::class, 'update']);
     Route::delete('/v/profile', [ProfileApiController::class, 'destroy']);
 });
 
@@ -57,7 +55,6 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/d/{table}', [DynamicDatabaseController::class, 'index']);
     Route::get('/d/{table}/{id}', [DynamicDatabaseController::class, 'show']);
-    Route::post('/d/{table}', [DynamicDatabaseController::class, 'store']);
     Route::put('/d/{table}/{id}', [DynamicDatabaseController::class, 'update']);
     Route::delete('/d/{table}/{id}', [DynamicDatabaseController::class, 'destroy']);
 });

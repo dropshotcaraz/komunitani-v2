@@ -14,8 +14,18 @@ class AuthenticatedSessionController extends Controller
     /**
      * Display the login view.
      */
-    public function create(): View
+    public function create(): View|RedirectResponse
     {
+        // If user is already logged in, redirect to dashboard
+        if (Auth::check()) {
+            return redirect()->route('dashboard');
+        }
+
+        // Store the current URL in the session if it's not the login page
+        if (url()->current() !== route('login')) {
+            session(['url.intended' => url()->current()]);
+        }
+
         return view('auth.login');
     }
 
@@ -28,7 +38,13 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        // Get the intended URL from session, default to dashboard if none exists
+        $redirectTo = session('url.intended', route('dashboard'));
+        
+        // Clear the intended URL from session
+        session()->forget('url.intended');
+
+        return redirect($redirectTo);
     }
 
     /**
@@ -43,5 +59,19 @@ class AuthenticatedSessionController extends Controller
         $request->session()->regenerateToken();
 
         return redirect('/');
+    }
+
+    /**
+     * Check if user is authenticated for protected pages.
+     * Add this to any protected route method.
+     */
+    protected function checkAuth(): ?RedirectResponse
+    {
+        if (!Auth::check()) {
+            // Store the current URL before redirecting
+            session(['url.intended' => url()->current()]);
+            return redirect('/');
+        }
+        return null;
     }
 }
