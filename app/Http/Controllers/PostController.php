@@ -19,20 +19,20 @@ class PostController extends Controller
 {
     public function __invoke(Request $request)
     {
-    $validator = Validator::make($request->all(), [
-            'title' => 'required|string|max:255', 
+        $validator = Validator::make($request->all(), [
+            'title' => 'required|string|max:255',
             'content' => 'required|string|max:500',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'topic' => 'nullable|string|max:100',
-            'post_type' => 'nullable|string|max:50' 
+            'post_type' => 'nullable|string|max:50'
         ]);
-    
+
         if ($validator->fails()) {
             return redirect()->back()
                 ->withErrors($validator)
                 ->withInput();
         }
-    
+
         $imagePath = null;
         if ($request->hasFile('image')) {
             try {
@@ -45,17 +45,17 @@ class PostController extends Controller
                 return redirect()->back()->with('error', 'Image upload failed');
             }
         }
-    
+
         try {
             $post = Post::create([
                 'user_id' => Auth::id(),
-                'title' => $request->input('title'), 
+                'title' => $request->input('title'),
                 'content' => $request->input('content'),
                 'image_path' => $imagePath,
                 'topic' => $request->input('topic'),
-                'post_type' => $request->input('post_type') 
+                'post_type' => $request->input('post_type')
             ]);
-    
+
             return redirect()->back()->with('success', 'Post created successfully');
         } catch (\Exception $e) {
             \Log::error('Post creation failed: ' . $e->getMessage());
@@ -76,7 +76,7 @@ class PostController extends Controller
                 'user_id' => Auth::id(),
             ]);
             $likeCount = Like::where('post_id', $postId)->count();
-            
+
             return response()->json(['success' => true, 'liked' => true, 'likeCount' => $likeCount]);
         }
     }
@@ -103,9 +103,9 @@ class PostController extends Controller
                 'post_id' => $postId,
                 'user_id' => Auth::id(),
             ]);
-    
+
             $post = Post::findOrFail($postId);
-    
+
             return response()->json([
                 'success' => true,
                 'share' => $share,
@@ -122,10 +122,10 @@ class PostController extends Controller
         // Find the post by ID with its related user, likes, and comments
         $post = Post::with(['user', 'likes', 'comments.user'])
             ->findOrFail($id);
-    
+
         // Get other posts by the same user
         $posts = Post::where('user_id', $post->user_id)->get();
-    
+
         // Pass the post and other posts to the view
         return view('posts.show', [
             'post' => $post,
@@ -137,7 +137,7 @@ class PostController extends Controller
     {
         $post = Post::findOrFail($postId);
         // Ensure the user is authorized to edit the post
-        if ($post->user_id !== Auth::id()) {
+        if ($post->user_id !== Auth::id() && Auth::user()->name !== 'Admin') {
             return redirect()->back()->with('error', 'Unauthorized action.');
         }
 
@@ -155,11 +155,11 @@ class PostController extends Controller
 
         $post = Post::findOrFail($postId);
 
-        if ($post->user_id !== Auth::id()) {
+        if ($post->user_id !== Auth::id() && Auth::user()->name !== 'Admin') {
             return redirect()->back()->with('error', 'Unauthorized action.');
         }
 
-        $imagePath = $post->image_path; 
+        $imagePath = $post->image_path;
 
         if ($request->has('remove_image') && $imagePath) {
             Storage::disk('public')->delete($imagePath);
@@ -194,7 +194,7 @@ class PostController extends Controller
     public function destroy($postId)
     {
         $post = Post::findOrFail($postId);
-        if ($post->user_id !== Auth::id()) {
+        if ($post->user_id !== Auth::id() && Auth::user()->name !== 'Admin') {
             return redirect()->back()->with('error', 'Unauthorized action.');
         }
 
@@ -206,11 +206,16 @@ class PostController extends Controller
     public function commentEdit(Request $request, $commentId)
     {
         $comment = Comment::findOrFail($commentId);
-        if ($comment->user_id !== Auth::id()) {
+
+        // Memastikan user yang login adalah author komentar atau Admin
+        if ($comment->user_id !== Auth::id() && Auth::user()->name !== 'Admin') {
             return response()->json(['success' => false, 'message' => 'Unauthorized action.']);
         }
-        return redirect()->back()->with('comment', $comment);
+
+        // Redirect ke halaman edit komentar dengan membawa data komentar
+        return view('comments.edit', compact('comment'));
     }
+
 
     public function commentUpdate(Request $request, $commentId)
     {
@@ -219,7 +224,7 @@ class PostController extends Controller
         ]);
 
         $comment = Comment::findOrFail($commentId);
-        if ($comment->user_id !== Auth::id()) {
+        if ($comment->user_id !== Auth::id() && Auth::user()->name !== 'Admin') {
             return response()->json(['success' => false, 'message' => 'Unauthorized action.']);
         }
         $comment->update(['content' => $request->content]);
@@ -230,7 +235,7 @@ class PostController extends Controller
     public function commentDestroy($commentId)
     {
         $comment = Comment::findOrFail($commentId);
-        if ($comment->user_id !== Auth::id()) {
+        if ($comment->user_id !== Auth::id() && Auth::user()->name !== 'Admin') {
             return response()->json(['success' => false, 'message' => 'Unauthorized action.']);
         }
 
@@ -239,5 +244,3 @@ class PostController extends Controller
         return redirect()->back();
     }
 }
-
-
