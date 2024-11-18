@@ -46,13 +46,14 @@ Route::post('/posts/{post}/like', [PostController::class, 'like'])->name('posts.
 Route::post('/posts/{post}/comment', [PostController::class, 'comment'])->name('posts.comment');
 Route::post('/posts/{post}/share', [PostController::class, 'share'])->name('posts.share');
 
-    // Comment routes
-    Route::get('/comments/{commentId}/edit', [PostController::class, 'commentEdit'])->name('comments.edit');
-    Route::put('/comments/{commentId}', [PostController::class, 'commentUpdate'])->name('comments.update');
-    Route::delete('/comments/{commentId}', [PostController::class, 'commentDestroy'])->name('comments.destroy');
+// Comment routes
+Route::get('/comments/{commentId}/edit', [PostController::class, 'commentEdit'])->name('comments.edit');
+Route::put('/comments/{commentId}', [PostController::class, 'commentUpdate'])->name('comments.update');
+Route::delete('/comments/{commentId}', [PostController::class, 'commentDestroy'])->name('comments.destroy');
 
 // For 'TimelineController' as an invokable controller
 Route::get('/dashboard', TimelineController::class)->name('dashboard');
+Route::get('/followingpage', TimelineController::class)->name('followingpage');
 
 // For 'FollowController' as a controller with multiple methods
 Route::post('follow/{user}', [FollowController::class, 'follow'])->name('follow');
@@ -68,4 +69,4 @@ Route::controller(SearchController::class)->group(function () {
 // For 'MessagesController' as an invokable controller
 Route::get('/messages', MessagesController::class)->name('messages');
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
