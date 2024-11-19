@@ -220,14 +220,14 @@
             const form = event.target.closest('form');
 
             Swal.fire({
-                title: 'Are you sure?',
-                text: "You will be logged out of your session",
+                title: 'Apakah anda yakin?',
+                text: "Anda akan logout dari website ini.",
                 icon: 'question',
                 showCancelButton: true,
                 confirmButtonColor: '#91972A',
                 cancelButtonColor: '#6B7280',
-                confirmButtonText: 'Yes, logout',
-                cancelButtonText: 'Cancel',
+                confirmButtonText: 'Logout',
+                cancelButtonText: 'Batal',
                 background: '#F6FEDB',
                 borderRadius: '1rem',
                 customClass: {

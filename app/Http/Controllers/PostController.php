@@ -14,6 +14,7 @@ use App\Models\Like;
 use App\Models\Comment;
 use App\Models\Share;
 use App\Http\Controllers\Controller;
+use Illuminate\Validation\ValidationException;
 
 class PostController extends Controller
 {
@@ -147,47 +148,87 @@ class PostController extends Controller
 
     public function update(Request $request, $postId)
     {
-        $request->validate([
-            'content' => 'required|string|max:500',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'topic' => 'nullable|string|max:100'
-        ]);
-
-        $post = Post::findOrFail($postId);
-
-        if ($post->user_id !== Auth::id() && Auth::user()->name !== 'Admin') {
-            return redirect()->back()->with('error', 'Unauthorized action.');
-        }
-
-        $imagePath = $post->image_path;
-
-        if ($request->has('remove_image') && $imagePath) {
-            Storage::disk('public')->delete($imagePath);
-            $imagePath = null;
-        }
-
-        if ($request->hasFile('image')) {
-            try {
-                $image = $request->file('image');
-                $imageName = time() . '.' . $image->getClientOriginalExtension();
-                $newImagePath = $image->storeAs('public/posts', $imageName, 'public');
-                $imagePath = str_replace('public/', '', $newImagePath);
-
-                if ($post->image_path) {
-                    Storage::disk('public')->delete($post->image_path);
-                }
-            } catch (\Exception $e) {
-                \Log::error('Image upload failed: ' . $e->getMessage());
-                return redirect()->back()->with('error', 'Image upload failed');
+        try {
+            // Validate request
+            $validated = $request->validate([
+                'title' => 'required|string|max:255',
+                'content' => 'required|string|max:500',
+                'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                'topic' => 'required|string|max:100',
+                'post_type' => 'required|string|in:Informasi,Tanya Jawab,Diskusi,Berita',
+                'remove_image' => 'nullable|boolean'
+            ]);
+    
+            // Find post and check authorization
+            $post = Post::findOrFail($postId);
+            if ($post->user_id !== Auth::id() && !Auth::user()->hasRole('Admin')) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Unauthorized action.'
+                ], 403);
             }
+    
+            // Handle image processing
+            $imagePath = $post->image_path;
+    
+            // Handle image removal
+            if ($request->input('remove_image') == 'true' && $imagePath) {
+                Storage::disk('public')->delete($imagePath);
+                $imagePath = null;
+            }
+    
+            // Handle new image upload
+            if ($request->hasFile('image')) {
+                try {
+                    // Delete old image if exists
+                    if ($post->image_path) {
+                        Storage::disk('public')->delete($post->image_path);
+                    }
+    
+                    // Upload new image
+                    $image = $request->file('image');
+                    $imageName = time() . '_' . $image->getClientOriginalName();
+                    $newImagePath = $image->storeAs('posts', $imageName, 'public');
+                    $imagePath = $newImagePath;
+    
+                } catch (\Exception $e) {
+                    \Log::error('Image upload failed: ' . $e->getMessage());
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Image upload failed: ' . $e->getMessage()
+                    ], 500);
+                }
+            }
+    
+            // Update post
+            $post->update([
+                'title' => $request->input('title'),
+                'content' => $request->input('content'),
+                'image_path' => $imagePath,
+                'topic' => $request->input('topic'),
+                'post_type' => $request->input('post_type')
+            ]);
+    
+            return response()->json([
+                'success' => true,
+                'message' => 'Post updated successfully',
+                'post' => $post
+            ]);
+    
+        } catch (ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation failed',
+                'errors' => $e->errors()
+            ], 422);
+    
+        } catch (\Exception $e) {
+            \Log::error('Post update failed: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'An error occurred while updating the post'
+            ], 500);
         }
-        $post->update([
-            'content' => $request->input('content'),
-            'image_path' => $imagePath,
-            'topic' => $request->input('topic')
-        ]);
-
-        return redirect()->back()->with('success', 'Post updated successfully');
     }
 
 
