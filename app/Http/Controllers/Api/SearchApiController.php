@@ -18,8 +18,6 @@ class SearchApiController extends Controller
             'topic' => 'nullable|string|max:100',
             'post_type' => 'nullable|string|max:100',
             'date_filter' => 'nullable|in:today,week,month',
-            'page' => 'nullable|integer|min:1',
-            'per_page' => 'nullable|integer|min:1|max:100'
         ]);
 
         if ($validator->fails()) {
