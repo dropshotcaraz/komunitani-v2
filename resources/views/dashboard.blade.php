@@ -8,14 +8,11 @@
     <h1 class="font-bold text-white text-3xl mb-4">Beranda Post</h1>
     <form id="postForm" class="space-y-4" action="{{ route('post.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
-        
-        <!-- Title Input -->
+
         <input type="text" name="title" placeholder="Judul Post" class="w-full bg-gray-50 p-3 rounded-lg outline-none border border-gray-300 focus:border-[#6FA843]">
-        
-        <!-- Content Textarea -->
+
         <textarea id="postTextarea" name="content" placeholder="Tulis pertanyaan atau informasi di sini" class="w-full bg-gray-50 p-3 rounded-lg outline-none border border-gray-300 focus:border-[#6FA843]"></textarea>
-        
-        <!-- Topic Select -->
+
         <div class="flex items-center space-x-3">
             <select id="topicSelect" name="topic" class="border border-gray-300 py-2 px-8 rounded-lg bg-gray-50 focus:border-[#6FA843]">
                 <option value="">Pilih Topik</option>
@@ -60,7 +57,7 @@
                 @foreach ($posts as $post)
                 @include('posts.partials.post-card')
                 @endforeach
-                @include('posts.partials.back-to-top')
+                @include('posts.partials.post-button')
     </div>
 
     <script>
