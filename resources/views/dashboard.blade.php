@@ -60,6 +60,7 @@
                 @foreach ($posts as $post)
                 @include('posts.partials.post-card')
                 @endforeach
+                @include('posts.partials.back-to-top')
     </div>
 
     <script>

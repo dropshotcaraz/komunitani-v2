@@ -101,6 +101,8 @@
             </div>
         </div>
 
+        @include('posts.partials.back-to-top')
+        
         <!-- Image Modal -->
         <div id="modalBackdrop" class="fixed inset-0 bg-black bg-opacity-70 hidden transition-opacity duration-500"></div>
         <div id="imageModal" class="fixed inset-0 flex items-center justify-center hidden transition-transform duration-500 transform scale-75">

@@ -12,6 +12,7 @@
                     @include('posts.partials.post-card')
                 @endforeach
             @endif
+            @include('posts.partials.back-to-top')
         </div>
 
         <script>
@@ -22,12 +23,10 @@
             document.querySelectorAll('.like-button').forEach(button => {
                 const postId = button.getAttribute('data-post-id');
 
-                // Check local storage for liked state
                 const likedState = localStorage.getItem(`liked_${postId}`);
                 const likeCountElement = button.querySelector('.like-count');
                 const heartIcon = button.querySelector('.heart-icon');
 
-                // Set initial like count and color based on local storage
                 if (likedState === 'true' || likedState === true) {
                     heartIcon.classList.add('text-red-500');
                     button.classList.add('text-red-500');
