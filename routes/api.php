@@ -1,11 +1,10 @@
 <?php
 
-use App\Http\Controllers\Api\FollowApiController;
-use App\Http\Controllers\DynamicDatabaseController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\FollowController;
+use App\Http\Controllers\Api\DynamicDatabaseController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Api\FollowApiController;
 use App\Http\Controllers\Api\ProfileApiController;
 use App\Http\Controllers\Api\SearchApiController;
 use App\Http\Controllers\Api\PostApiController;
