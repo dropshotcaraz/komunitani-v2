@@ -1,6 +1,6 @@
 <?php
 
-
+use App\Http\Controllers\Api\FollowApiController;
 use App\Http\Controllers\DynamicDatabaseController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -10,7 +10,7 @@ use App\Http\Controllers\Api\ProfileApiController;
 use App\Http\Controllers\Api\SearchApiController;
 use App\Http\Controllers\Api\PostApiController;
 
-Route::get('/user', function (Request $request) {
+Route::get('/v/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
@@ -20,10 +20,10 @@ Route::post('/v/login', [AuthController::class, 'login']);
 
 // routing autentikasi pk api
 Route::middleware('auth:sanctum')->group(function () {
-    Route::post('/logout', [AuthController::class, 'logout']);
-    Route::get('/user', [AuthController::class, 'user']);
-    Route::put('/profile', [AuthController::class, 'updateProfile']);
-    Route::put('/password', [AuthController::class, 'changePassword']);
+    Route::post('/v/logout', [AuthController::class, 'logout']);
+    Route::get('/v/user', [AuthController::class, 'user']);
+    Route::put('/v/profile', [AuthController::class, 'updateProfile']);
+    Route::put('/v/password', [AuthController::class, 'changePassword']);
 });
 
 // routing postingan pk api
@@ -64,6 +64,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/v/search/suggestions', [SearchApiController::class, 'suggestions']);
 });
 
-
-Route::post('/follow/{user}', [FollowController::class, 'follow']);
-Route::delete('/unfollow/{user}', [FollowController::class, 'unfollow']);
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/v/users/{id}', [FollowApiController::class, 'show']);
+    Route::post('/v/users/{id}/follow', [FollowApiController::class, 'follow']);
+    Route::post('/v/users/{id}/unfollow', [FollowApiController::class, 'unfollow']);
+});
