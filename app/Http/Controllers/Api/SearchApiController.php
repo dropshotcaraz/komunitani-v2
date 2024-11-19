@@ -69,8 +69,7 @@ class SearchApiController extends Controller
         }
 
         // Fetch paginated results
-        $perPage = $request->input('per_page', 9);
-        $posts = $query->latest()->paginate($perPage);
+        $posts = $query->latest()->get();
 
         // Get available filters
         $availableTopics = Post::select('topic')
@@ -104,18 +103,6 @@ class SearchApiController extends Controller
                         'created_at_formatted' => $post->created_at->diffForHumans(),
                     ];
                 }),
-                'pagination' => [
-                    'current_page' => $posts->currentPage(),
-                    'last_page' => $posts->lastPage(),
-                    'per_page' => $posts->perPage(),
-                    'total' => $posts->total(),
-                    'links' => [
-                        'first' => $posts->url(1),
-                        'last' => $posts->url($posts->lastPage()),
-                        'prev' => $posts->previousPageUrl(),
-                        'next' => $posts->nextPageUrl(),
-                    ]
-                ],
                 'filters' => [
                     'available_topics' => $availableTopics,
                     'available_post_types' => $availablePostTypes,
