@@ -151,11 +151,11 @@ class PostController extends Controller
         try {
             // Validate request
             $validated = $request->validate([
-                'title' => 'required|string|max:255',
-                'content' => 'required|string|max:500',
+                'title' => 'nullable|string|max:255',
+                'content' => 'nullable|string|max:500',
                 'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-                'topic' => 'required|string|max:100',
-                'post_type' => 'required|string|in:Informasi,Tanya Jawab,Diskusi,Berita',
+                'topic' => 'nullable|string|max:100',
+                'post_type' => 'nullable|string|in:Informasi,Tanya Jawab,Diskusi,Berita',
                 'remove_image' => 'nullable|boolean'
             ]);
     

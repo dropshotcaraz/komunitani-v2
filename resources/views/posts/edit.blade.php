@@ -25,7 +25,6 @@
                                     <option value="Tanaman Pangan" {{ $post->topic == 'Tanaman Pangan' ? 'selected' : '' }}>Tanaman Pangan</option>
                                     <option value="Hortikultura" {{ $post->topic == 'Hortikultura' ? 'selected' : '' }}>Hortikultura</option>
                                     <option value="Perkebunan" {{ $post->topic == 'Perkebunan' ? 'selected' : '' }}>Perkebunan</option>
-                                    <option value="Peternakan" {{ $post->topic == 'Peternakan' ? 'selected' : '' }}>Peternakan</option>
                                 </select>
 
                                 <select id="postTypeSelect" name="post_type" class="border border-gray-300 py-2 px-8 rounded-lg bg-gray-50 focus:border-[#6FA843]">
@@ -33,7 +32,6 @@
                                     <option value="Informasi" {{ $post->post_type == 'Informasi' ? 'selected' : '' }}>Informasi</option>
                                     <option value="Tanya Jawab" {{ $post->post_type == 'Tanya Jawab' ? 'selected' : '' }}>Tanya Jawab</option>
                                     <option value="Diskusi" {{ $post->post_type == 'Diskusi' ? 'selected' : '' }}>Diskusi</option>
-                                    <option value="Berita" {{ $post->post_type == 'Berita' ? 'selected' : '' }}>Berita</option>
                                 </select>
 
                                 <button type="button" onclick="document.getElementById('imageUpload').click()" class="flex items-center text-gray-500 hover:text-[#6FA843] transition">
