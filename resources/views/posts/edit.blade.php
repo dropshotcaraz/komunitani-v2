@@ -70,9 +70,11 @@
 
     <script>
         // Handle form submission
+        
         document.getElementById('editPostForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
+            const postId = {{ $post->id }};
             const form = this;
             const formData = new FormData(form);
 
