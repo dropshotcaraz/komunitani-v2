@@ -12,6 +12,7 @@ use Illuminate\Validation\Rule;
 use App\Models\User;
 use App\Models\Post;
 use Illuminate\View\View;
+use Illuminate\Validation\Rules\NotIn;
 
 class ProfileController extends Controller
 {
@@ -33,7 +34,7 @@ class ProfileController extends Controller
         $user = $request->user();
 
         $validatedData = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
+            'name' => ['required', 'string', 'max:255', new NotIn(['admin', 'Admin', 'ADMIN'])],
             'email' => [
                 'required', 
                 'string', 

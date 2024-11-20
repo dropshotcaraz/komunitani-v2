@@ -13,7 +13,7 @@
         @csrf
     </form>
 
-    <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6" enctype="multipart/form-data">
+    <form id="profile-update" method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6" enctype="multipart/form-data">
         @csrf
         @method('patch')
 
@@ -89,4 +89,66 @@
             @endif
         </div>
     </form>
+
+    <!-- Add this script section at the bottom of your form -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.21.0/jquery.validate.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        $(document).ready(function() {
+            // Add custom method for admin check
+            $.validator.addMethod("notAdmin", function(value, element) {
+                return !/^admin$/i.test(value.trim());
+            }, "Name 'admin' is not allowed");
+
+            // Form validation
+            $("#profile-update").validate({
+                rules: {
+                    name: {
+                        required: true,
+                        minlength: 2,
+                        notAdmin: true
+                    }
+                },
+                messages: {
+                    name: {
+                        required: "Name field is required",
+                        minlength: "Name must be at least 2 characters long",
+                        notAdmin: "The name 'admin' is not allowed"
+                    }
+                },
+                errorElement: 'span',
+                errorClass: 'text-red-500 text-sm mt-1',
+
+                // Handle form submission
+                submitHandler: function(form) {
+                    // Check one last time if the name is 'admin'
+                    const nameValue = $('#name').val().trim().toLowerCase();
+                    if (nameValue === 'admin') {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Invalid Name',
+                            text: 'The name "admin" is not allowed',
+                            confirmButtonText: 'Ok'
+                        });
+                        return false;
+                    }
+                    
+                    // If all is well, submit the form
+                    form.submit();
+                }
+            });
+
+            // Additional real-time validation for the name field
+            $('#name').on('input', function() {
+                const nameValue = $(this).val().trim().toLowerCase();
+                if (nameValue === 'admin') {
+                    $(this).addClass('border-red-500');
+                } else {
+                    $(this).removeClass('border-red-500');
+                }
+            });
+        });
+    </script>
 </section>
