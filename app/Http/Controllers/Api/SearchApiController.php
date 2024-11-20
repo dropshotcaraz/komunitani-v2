@@ -122,35 +122,4 @@ class SearchApiController extends Controller
         ]);
     }
 
-    public function suggestions(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'query' => 'required|string|min:2|max:255'
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
-        }
-
-        $searchTerm = $request->input('query');
-
-        $suggestions = Post::where('title', 'LIKE', "%{$searchTerm}%")
-            ->orWhere('content', 'LIKE', "%{$searchTerm}%")
-            ->orWhere('topic', 'LIKE', "%{$searchTerm}%")
-            ->select('id', 'title', 'topic')
-            ->limit(5)
-            ->get()
-            ->map(function ($post) {
-                return [
-                    'id' => $post->id,
-                    'title' => $post->title,
-                    'topic' => $post->topic
-                ];
-            });
-
-        return response()->json([
-            'success' => true,
-            'data' => $suggestions
-        ]);
-    }
 }
