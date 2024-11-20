@@ -13,6 +13,13 @@
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     @vite('resources/css/app.css')
+    <style>
+        .error {
+            margin-top: 0.5rem;
+            display: block;
+            text-align: left;
+        }
+    </style>
 </head>
 <body class="bg-white-100 flex justify-center items-center min-h-screen">
     <section class="flex my-12 flex-col px-11 pt-8 pb-8 bg-[#F7F0CF] rounded-3xl shadow-lg max-md:px-5 max-md:pb-24">
@@ -89,12 +96,18 @@
         });
 
         $(document).ready(function() {
+            // Add custom method for admin check
+            $.validator.addMethod("notAdmin", function(value, element) {
+                return !/^admin$/i.test(value.trim());
+            }, "Nama 'admin' tidak diperbolehkan untuk digunakan");
+
             // Form validation
             $("#signup").validate({
                 rules: {
                     name: {
                         required: true,
-                        minlength: 2
+                        minlength: 2,
+                        notAdmin: true
                     },
                     email: {
                         required: true,
@@ -112,7 +125,8 @@
                 messages: {
                     name: {
                         required: "Name tidak boleh kosong",
-                        minlength: "Name minimal 2 karakter"
+                        minlength: "Name minimal 2 karakter",
+                        notAdmin: "Nama 'admin' tidak diperbolehkan untuk digunakan"
                     },
                     email: {
                         required: "Email tidak boleh kosong",
@@ -132,7 +146,7 @@
                 // Submit form via AJAX
                 submitHandler: function(form) {
                     $.ajax({
-                        url: "{{ route('register') }}"
+                        url: "{{ route('register') }}",
                         method: 'POST',
                         data: $(form).serialize(),
                         success: function(response) {
