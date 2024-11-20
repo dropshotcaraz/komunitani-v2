@@ -12,7 +12,7 @@
                                     'flex items-center space-x-4 p-3 hover:bg-gray-100 rounded-lg cursor-pointer',
                                     'bg-gray-100' => $user->id === $receiverUser->id,
                                 ])>
-                                <img src="https://via.placeholder.com/40" alt="Alice Johnson"
+                                <img src="https://xsgames.co/randomusers/avatar.php?g=pixel" alt="Alice Johnson"
                                     class="w-10 h-10 rounded-full">
                                 <div class="flex justify-end">
                                     <div>
@@ -34,26 +34,15 @@
             <div class="flex-1 flex flex-col">
                 <!-- Chat Header -->
                 <div class="bg-white p-4 border-b">
-                    <h2 class="text-xl font-semibold">{{ str($receiverUser->name)->headline() }}</h2>
+                    <h2 class="text-xl font-semibold">
+                        <a href="/profile/view/{{ $receiverUser->id }}" class="hover:text-[#6FA843] transition">
+                            {{ str($receiverUser->name)->headline() }}
+                        </a>
+                    </h2>
                 </div>
 
                 <!-- Messages -->
                 <div class="flex-1 p-4 overflow-y-auto space-y-4 h-[calc(100vh)]">
-                    <!-- Message from other user -->
-                    <!-- <div class="flex items-start">
-                        <img src="https://via.placeholder.com/32" alt="{{ str($receiverUser->name)->headline() }}" class="w-8 h-8 rounded-full mr-2">
-                        <div class="bg-gray-200 p-3 rounded-lg max-w-xs">
-                            <p>Hey there!</p>
-                            <p class="text-xs text-gray-500 mt-1">10:00 AM</p>
-                        </div>
-                    </div> -->
-                    <!-- Message from current user -->
-                    <!-- <div class="flex items-start justify-end">
-                        <div class="bg-blue-500 text-white p-3 rounded-lg max-w-xs">
-                            <p>Hi Alice, how are you?</p>
-                            <p class="text-xs text-blue-100 mt-1">10:05 AM</p>
-                        </div>
-                    </div> -->
                     @forelse ($messages as $message)
                         @if ($message->sender_id == auth()->id())
                             <div class="flex items-start justify-end">
@@ -65,11 +54,11 @@
                             </div>
                         @else
                             <div class="flex items-start">
-                                <img src="https://via.placeholder.com/32"
+                                <img src="https://xsgames.co/randomusers/avatar.php?g=pixel"
                                     alt="{{ str($receiverUser->name)->headline() }}" class="w-8 h-8 rounded-full mr-2">
-                                <div class="bg-gray-200 p-3 rounded-lg max-w-xs">
+                                <div class="bg-green-200 text-black p-3 rounded-lg max-w-xs">
                                     <p>{{ $message->message }}</p>
-                                    <p class="text-xs text-blue-100 mt-1">
+                                    <p class="text-xs text-black mt-1">
                                         {{ $message->created_at->isoFormat('HH:mm') }}</p>
                                 </div>
                             </div>
@@ -89,7 +78,7 @@
                             <input required type="text" name="message" placeholder="Type a message..."
                                 class="flex-1 px-4 py-2 border rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                             <button type="submit"
-                                class="bg-blue-500 text-white px-4 py-2 rounded-r-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                                class="bg-[#434028] text-white px-4 py-2 rounded-r-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
                                 Send
                             </button>
                         </div>

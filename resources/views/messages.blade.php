@@ -9,7 +9,7 @@
                         @foreach ($users as $user)
                             <div onclick="window.location='{{ url('/messages/' . $user->id) }}'"
                                 class="flex items-center space-x-4 p-3 hover:bg-gray-100 rounded-lg cursor-pointer">
-                                <img src="https://via.placeholder.com/40" alt="Alice Johnson"
+                                <img src="https://xsgames.co/randomusers/avatar.php?g=pixel" alt="Alice Johnson"
                                     class="w-10 h-10 rounded-full">
                                 <div class="flex justify-end">
                                     <div>
@@ -37,8 +37,8 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
                         </svg>
-                        <h3 class="mt-2 text-sm font-medium text-gray-900">No chat selected</h3>
-                        <p class="mt-1 text-sm text-gray-500">Get started by selecting a chat from the sidebar.</p>
+                        <h3 class="mt-2 text-sm font-medium text-gray-900">Tidak ada percakapan yang dipilih</h3>
+                        <p class="mt-1 text-sm text-gray-500">Pilih percakapan untuk melihat pesan</p>
                     </div>
                 </div>
             </div>

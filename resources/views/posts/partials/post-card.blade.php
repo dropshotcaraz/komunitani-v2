@@ -53,22 +53,16 @@
                                             stroke-linejoin="round" />
                                     </svg>
                                 </a>
-                                <form action="{{ route('posts.destroy', $post->id) }}" method="POST"
-                                    onsubmit="return confirm('Are you sure you want to delete this post?');"
-                                    class="inline">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit"
-                                        class="flex items-center text-red-500 hover:text-red-600 transition"
-                                        title="Delete">
-                                        <!-- SVG Icon for Delete -->
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
-                                            viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M6 18L18 6M6 6l12 12" />
-                                        </svg>
-                                    </button>
-                                </form>
+                                <form action="{{ route('posts.destroy', $post->id) }}" method="POST" 
+    onsubmit="event.preventDefault(); confirmDelete(this);" class="inline">
+    @csrf
+    @method('DELETE')
+    <button type="submit" class="flex items-center text-red-500 hover:text-red-600 transition" title="Delete">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+    </button>
+</form>
                             </div>
                         @endif
                     </div>
@@ -144,7 +138,7 @@
         <div class="bg-gray-100 p-3 rounded-lg mb-2">
             <div class="flex items-center justify-between">
                 <div class="flex items-center">
-                    <a href="{{ auth()->user()->id === $post->user_id ? route('profile.show') : route('profile.view', $post->user->id) }}" class="hover:text-[#6FA843] transition">
+                    <a href="{{ auth()->user()->id === $comment->user_id ? route('profile.show') : route('profile.view', $comment->user->id) }}" class="hover:text-[#6FA843] transition">
                         <strong class="mr-2">{{ $comment->user->name }}</strong>
                     </a>
                 </div>
@@ -338,11 +332,12 @@ function confirmDelete(form) {
         showCancelButton: true,
         confirmButtonColor: '#d33',
         cancelButtonColor: '#3085d6',
-        confirmButtonText: 'Yes, delete it!'
+        confirmButtonText: 'Hapus'
     }).then((result) => {
         if (result.isConfirmed) {
             form.submit();
         }
     });
 }
+
 </script>

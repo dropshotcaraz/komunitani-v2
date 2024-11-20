@@ -48,18 +48,24 @@
                             <span class ="font-bold">{{ $user->following_count }} Following</span>
                         </div>
                     </div>
-                    <div class="ml-4 pr-6">
-                        @if(Auth::check() && !Auth::user()->isFollowing($user->id) && Auth::user()->id !== $user->id)
-                            <form action="{{ route('follow', $user->id) }}" method="POST">
-                                @csrf
-                                <button type="submit" class="bg-[#6FA843] text-white px-4 py-2 rounded-lg hover:bg-[#578432] transition">Follow</button>
-                            </form>
-                        @elseif(Auth::check() && Auth::user()->isFollowing($user->id) && Auth::user()->id !== $user->id)
-                            <form action="{{ route('unfollow', $user->id) }}" method="POST">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition">Unfollow</button>
-                            </form>
+                    <div class="ml-4 pr-6 flex gap-2">
+                        @if(Auth::check() && Auth::user()->id !== $user->id)
+                            <a href="/messages/{{ $user->id }}" class="bg-[#618805] text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition">
+                                Message
+                            </a>
+                            
+                            @if(!Auth::user()->isFollowing($user->id))
+                                <form action="{{ route('follow', $user->id) }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="bg-[#6FA843] text-white px-4 py-2 rounded-lg hover:bg-[#578432] transition">Follow</button>
+                                </form>
+                            @else
+                                <form action="{{ route('unfollow', $user->id) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition">Unfollow</button>
+                                </form>
+                            @endif
                         @endif
                     </div>
                 </div>
