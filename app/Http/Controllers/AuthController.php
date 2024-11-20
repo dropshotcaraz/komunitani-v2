@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Validation\Rules\NotIn;
 
 class AuthController extends Controller
 {
@@ -19,7 +20,7 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $request->validate([
-            'name' => ['required', 'string', 'max:255'],
+            'name' => ['required', 'string', 'max:255', new NotIn(['admin', 'Admin', 'ADMIN'])],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'confirmed', Password::defaults()],
         ]);
@@ -91,7 +92,7 @@ class AuthController extends Controller
     public function updateProfile(Request $request)
     {
         $request->validate([
-            'name' => ['required', 'string', 'max:255'],
+            'name' => ['required', 'string', 'max:255', new NotIn(['admin', 'Admin', 'ADMIN'])],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,' . $request->user()->id],
         ]);
 

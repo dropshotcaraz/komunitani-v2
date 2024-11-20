@@ -9,9 +9,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\NotIn;
 use App\Models\User;
 use App\Models\Post;
-
 class ProfileApiController extends Controller
 {
     /**
@@ -66,7 +66,7 @@ class ProfileApiController extends Controller
         $user = $request->user();
 
         $validatedData = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
+            'name' => ['required', 'string', 'max:255', new NotIn(['admin', 'Admin', 'ADMIN'])],
             'email' => [
                 'required', 
                 'string', 
