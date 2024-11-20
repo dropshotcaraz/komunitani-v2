@@ -56,7 +56,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
 });
 
 Route::middleware('auth:sanctum')->group(function () {
-    // Route::get('/v/users/{id}', [FollowApiController::class, 'show']);
     Route::post('/v/users/{id}/follow', [FollowApiController::class, 'follow']);
     Route::post('/v/users/{id}/unfollow', [FollowApiController::class, 'unfollow']);
 });

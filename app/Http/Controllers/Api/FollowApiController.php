@@ -11,34 +11,6 @@ use Illuminate\Support\Facades\Auth;
 class FollowApiController extends Controller
 {
     /**
-     * Get user profile with followers and following
-     *
-     * @param int $id
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function show($id)
-    {
-        try {
-            $user = User::with(['followers', 'follows', 'posts'])->findOrFail($id);
-            
-            return response()->json([
-                'success' => true,
-                'data' => [
-                    'user' => $user,
-                    'followers_count' => $user->followers->count(),
-                    'following_count' => $user->follows->count(),
-                    'posts' => $user->posts
-                ]
-            ], 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'User not found'
-            ], 404);
-        }
-    }
-
-    /**
      * Follow a user
      *
      * @param Request $request
