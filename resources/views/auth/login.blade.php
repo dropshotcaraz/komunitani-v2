@@ -49,9 +49,9 @@
                         </div>
 
                         <!-- Forgot Password Link -->
-                        <div class="text-right mb-4">
+                        <!-- <div class="text-right mb-4">
                             <a href="{{ route('password.request') }}" class="text-[#618805] text-xs underline">Lupa password?</a>
-                        </div>
+                        </div> -->
 
                         <!-- Login Button -->
                         <x-primary-button class="w-full py-3 bg-[#618805] justify-center text-white font-bold rounded-lg shadow hover:bg-[#4c6a04] transition duration-300">

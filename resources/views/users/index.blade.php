@@ -5,7 +5,7 @@
                 <div class="flex justify-between mb-4">
                     <h2 class="text-xl font-semibold">Users</h2>
                     <a href="{{ route('users.create') }}"
-                        class="text-white bg-blue-500 hover:bg-blue-600 transition px-4 py-2 rounded-lg">Create User</a>
+                        class="text-white bg-blue-500 hover:bg-blue-600 transition px-4 py-2 rounded-lg">Buat User Baru</a>
                 </div>
                 @if (session('success'))
                     <div class="mb-4 text-green-500">{{ session('success') }}</div>
@@ -13,9 +13,9 @@
                 <table class="min-w-full table-auto">
                     <thead>
                         <tr>
-                            <th class="px-4 py-2 text-left">Name</th>
+                            <th class="px-4 py-2 text-left">Nama</th>
                             <th class="px-4 py-2 text-left">Email</th>
-                            <th class="px-4 py-2 text-left">Actions</th>
+                            <th class="px-4 py-2 text-left">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -35,7 +35,7 @@
                                         @method('DELETE')
                                         <button type="submit"
                                             class="flex items-center text-red-500 hover:text-red-600 transition">
-                                            Delete
+                                            Hapus
                                         </button>
                                     </form>
                                 </td>
