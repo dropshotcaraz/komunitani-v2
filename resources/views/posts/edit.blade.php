@@ -93,7 +93,7 @@
                         confirmButtonText: 'OK'
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            window.location.href = '/dashboard'; // Redirect to dashboard
+                            window.location.href = `/posts/${data.post_id}`; // Redirect to the updated post
                         }
                     });
                 } else {
