@@ -51,10 +51,8 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 
-Route::middleware(['auth:sanctum'])->group(function () {
-    Route::get('/v/search', [SearchApiController::class, 'index']);
-    Route::get('/v/search/suggestions', [SearchApiController::class, 'suggestions']);
-});
+Route::get('/v/search', [SearchApiController::class, 'index']);
+
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/v/users/{id}', [FollowApiController::class, 'show']);
