@@ -50,14 +50,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/v/profile', [ProfileApiController::class, 'destroy']);
 });
 
-// routing tabel dinamis pk api
-Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/d/{table}', [DynamicDatabaseController::class, 'index']);
-    Route::get('/d/{table}/{id}', [DynamicDatabaseController::class, 'show']);
-    Route::put('/d/{table}/{id}', [DynamicDatabaseController::class, 'update']);
-    Route::delete('/d/{table}/{id}', [DynamicDatabaseController::class, 'destroy']);
-});
-
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/v/search', [SearchApiController::class, 'index']);
     Route::get('/v/search/suggestions', [SearchApiController::class, 'suggestions']);
@@ -67,4 +59,13 @@ Route::middleware('auth:sanctum')->group(function () {
     // Route::get('/v/users/{id}', [FollowApiController::class, 'show']);
     Route::post('/v/users/{id}/follow', [FollowApiController::class, 'follow']);
     Route::post('/v/users/{id}/unfollow', [FollowApiController::class, 'unfollow']);
+});
+
+
+// routing tabel dinamis pk api
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/d/{table}', [DynamicDatabaseController::class, 'index']);
+    Route::get('/d/{table}/{id}', [DynamicDatabaseController::class, 'show']);
+    Route::put('/d/{table}/{id}', [DynamicDatabaseController::class, 'update']);
+    Route::delete('/d/{table}/{id}', [DynamicDatabaseController::class, 'destroy']);
 });
