@@ -21,7 +21,6 @@
                 <option value="Tanaman Pangan">Tanaman Pangan</option>
                 <option value="Hortikultura">Hortikultura</option>
                 <option value="Perkebunan">Perkebunan</option>
-                <option value="Peternakan">Peternakan</option>
             </select>
             
             <!-- Post Type Select -->
@@ -30,7 +29,6 @@
                 <option value="Informasi">Informasi</option>
                 <option value="Tanya Jawab">Tanya Jawab</option>
                 <option value="Diskusi">Diskusi</option>
-                <option value="Berita">Berita</option>
             </select>
 
             <!-- Image Upload Button -->

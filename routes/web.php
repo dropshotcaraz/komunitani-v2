@@ -18,7 +18,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// For 'ProfileController'
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::prefix('profile')->group(function () {
         Route::get('/', [ProfileController::class, 'show'])->name('profile.show');
@@ -30,7 +29,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->name('profile.view');
 });
 
-// For 'PostController' as an invokable controller
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/posts', PostController::class)->name('posts.index');
     Route::post('/posts', PostController::class)->name('post.store');
@@ -44,14 +42,12 @@ Route::get('/symlink', function () {
     Artisan::call('storage:link');
 });
 
-// For 'PostController' as a resource controller
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/posts/{post}/like', [PostController::class, 'like'])->name('posts.like');
     Route::post('/posts/{post}/comment', [PostController::class, 'comment'])->name('posts.comment');
     Route::post('/posts/{post}/share', [PostController::class, 'share'])->name('posts.share');
 });
 
-// Comment routes
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/comments/{commentId}/edit', [PostController::class, 'commentEdit'])->name('comments.edit');
     Route::put('/comments/{commentId}', [PostController::class, 'commentUpdate'])->name('comments.update');
@@ -62,7 +58,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('users', UserController::class);
 });
 
-// For 'TimelineController' as an invokable controller
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', TimelineController::class)->name('dashboard');
     Route::get('/followingpage', TimelineController::class)->name('followingpage');
@@ -83,7 +78,6 @@ Route::controller(SearchController::class)->group(function () {
 });
 });
 
-// For 'MessagesController' as an invokable controller
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/messages', MessagesController::class)->name('messages');
     Route::get('/messages/{userId}', [MessagesController::class, 'show'])->name('messages.show')
