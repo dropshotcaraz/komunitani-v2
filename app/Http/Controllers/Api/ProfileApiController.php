@@ -12,6 +12,7 @@ use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\NotIn;
 use App\Models\User;
 use App\Models\Post;
+
 class ProfileApiController extends Controller
 {
     /**
@@ -20,42 +21,57 @@ class ProfileApiController extends Controller
     public function show(): JsonResponse
     {
         $user = Auth::user();
-        
+    
         $posts = $user->posts()->latest()->get();
         $likedPosts = Post::whereHas('likes', function($query) use ($user) {
             $query->where('user_id', $user->id);
         })->latest()->get();
-
+    
         return response()->json([
-            'user' => $user,
-            'posts' => $posts,
-            'likedPosts' => $likedPosts
-        ]);
+            'success' => true,
+            'data' => [
+                'user' => $user,
+                'posts' => $posts,
+                'likedPosts' => $likedPosts,
+                'followers_count' => $user->followers->count(),
+                'following_count' => $user->follows->count()
+            ]
+        ], 200);
     }
-
-    /**
-     * View another user's profile
-     */
+    
     public function viewProfile($id): JsonResponse
     {
+        // Prevent viewing own profile through this method
         if (Auth::id() == $id) {
             return response()->json([
                 'message' => 'Please use /api/profile endpoint for viewing own profile'
             ], 400);
         }
-
-        $user = User::findOrFail($id);
-        
-        $posts = $user->posts()->latest()->get();
-        $likedPosts = Post::whereHas('likes', function($query) use ($user) {
-            $query->where('user_id', $user->id);
-        })->latest()->get();
-
-        return response()->json([
-            'user' => $user,
-            'posts' => $posts,
-            'likedPosts' => $likedPosts
-        ]);
+    
+        try {
+            $profileUser = User::with(['followers', 'follows', 'posts'])->findOrFail($id);
+            
+            $posts = $profileUser->posts()->latest()->get();
+            $likedPosts = Post::whereHas('likes', function($query) use ($profileUser) {
+                $query->where('user_id', $profileUser->id);
+            })->latest()->get();
+    
+            return response()->json([
+                'success' => true,
+                'data' => [
+                    'user' => $profileUser,
+                    'posts' => $posts,
+                    'likedPosts' => $likedPosts,
+                    'followers_count' => $profileUser->followers->count(),
+                    'following_count' => $profileUser->follows->count()
+                ]
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'User not found'
+            ], 404);
+        }
     }
 
     /**
