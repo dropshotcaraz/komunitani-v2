@@ -145,44 +145,60 @@
 
                 // Submit form via AJAX
                 submitHandler: function(form) {
-                    $.ajax({
-                        url: "{{ route('register') }}",
-                        method: 'POST',
-                        data: $(form).serialize(),
-                        success: function(response) {
-                            if(response.success) {
-                                // Redirect to homepage on success
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: 'Sign up successful',
-                                    text: 'You have successfully signed up!',
-                                    confirmButtonText: 'Continue'
-                                }).then((result) => {
-                                    if (result.isConfirmed) {
-                                        window.location.href = '/login';
-                                    }
-                                });
-                            } else {
-                                // Show SweetAlert warning on failure
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'Sign up failed',
-                                    text: response.message || 'Something went wrong!',
-                                    confirmButtonText: 'Try again'
-                                });
-                            }
-                        },
-                        error: function(xhr) {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Sign up failed',
-                                text: 'Please check your input and try again!',
-                                confirmButtonText: 'Retry'
-                            });
-                        }
-                    });
+    $.ajax({
+        url: "{{ route('register') }}",
+        method: 'POST',
+        data: $(form).serialize(),
+        dataType: 'json', // Explicitly expect JSON response
+        success: function(response) {
+            // Check if the response indicates success
+            if (response.status === 'success' || response.success === true) {
+                // Redirect to homepage on success
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Sign up successful',
+                    text: response.message || 'You have successfully signed up!',
+                    confirmButtonText: 'Continue'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = '/login';
+                    }
+                });
+            } else {
+                // Show SweetAlert warning on failure
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Sign up failed',
+                    text: response.message || 'Something went wrong!',
+                    confirmButtonText: 'Try again'
+                });
+            }
+        },
+        error: function(xhr) {
+            // Parse error response
+            let errorMessage = 'Please check your input and try again!';
+            
+            // Try to parse error response from server
+            if (xhr.responseJSON && xhr.responseJSON.message) {
+                errorMessage = xhr.responseJSON.message;
+            } else if (xhr.responseText) {
+                try {
+                    const errorResponse = JSON.parse(xhr.responseText);
+                    errorMessage = errorResponse.message || errorMessage;
+                } catch (e) {
+                    // If parsing fails, use default error message
                 }
+            }
+
+            Swal.fire({
+                icon: 'error',
+                title: 'Sign up failed',
+                text: errorMessage,
+                confirmButtonText: 'Retry'
             });
+        }
+    });
+}
         });
     </script>
 </body>
