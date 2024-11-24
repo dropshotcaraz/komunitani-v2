@@ -27,7 +27,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
 // routing postingan pk api
 Route::middleware(['auth:sanctum'])->group(function () {
-    // Basic post operations
+    // operasi post
     Route::get('/v/posts', [PostApiController::class,'index']);
     Route::post('/v/posts', [PostApiController::class,'store']);
     Route::get('/v/posts/{id}', [PostApiController::class, 'show']);
