@@ -8,12 +8,13 @@ use App\Http\Controllers\Api\FollowApiController;
 use App\Http\Controllers\Api\ProfileApiController;
 use App\Http\Controllers\Api\SearchApiController;
 use App\Http\Controllers\Api\PostApiController;
+use App\Http\Controllers\Api\MessagesApiController;
 
 Route::get('/v/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-// login/register wajib pk email password
+// login/register wajib pk action: email password
 Route::post('/v/register', [AuthController::class, 'register']);
 Route::post('/v/login', [AuthController::class, 'login']);
 
@@ -60,6 +61,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/v/users/{id}/unfollow', [FollowApiController::class, 'unfollow']);
 });
 
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/v/messages', [MessagesApiController::class, 'index']);
+    Route::get('/v/messages/{receiver}', [MessagesApiController::class, 'show']);
+    Route::post('/v/messages/{receiver}', [MessagesApiController::class, 'store']);
+});
 
 // routing tabel dinamis pk api
 Route::middleware('auth:sanctum')->group(function () {
