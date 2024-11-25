@@ -134,65 +134,65 @@
                     </div>
 
                     <div class="comments mt-4 hidden" id="comments{{ $post->id }}">
-    @foreach ($post->comments as $comment)
-        <div class="bg-gray-100 p-3 rounded-lg mb-2">
-            <div class="flex items-center justify-between">
-                <div class="flex items-center">
-                    <a href="{{ auth()->user()->id === $comment->user_id ? route('profile.show') : route('profile.view', $comment->user->id) }}" class="hover:text-[#6FA843] transition">
-                        <strong class="mr-2">{{ $comment->user->name }}</strong>
-                    </a>
-                </div>
-                
-                @if (auth()->check() && (auth()->user()->id === $comment->user_id || auth()->user()->name === 'Admin'))
-                    <div class="flex items-center gap-2">
-                        <button onclick="toggleEditForm({{ $comment->id }})" class="p-1.5 bg-blue-100 text-blue-600 rounded-lg hover:bg-blue-200 transition">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path d="M21.2799 6.40005L11.7399 15.94C10.7899 16.89 7.96987 17.33 7.33987 16.7C6.70987 16.07 7.13987 13.25 8.08987 12.3L17.6399 2.75002C17.8754 2.49308 18.1605 2.28654 18.4781 2.14284C18.7956 1.99914 19.139 1.92124 19.4875 1.9139C19.8359 1.90657 20.1823 1.96991 20.5056 2.10012C20.8289 2.23033 21.1225 2.42473 21.3686 2.67153C21.6147 2.91833 21.8083 3.21243 21.9376 3.53609C22.0669 3.85976 22.1294 4.20626 22.1211 4.55471C22.1128 4.90316 22.0339 5.24635 21.8894 5.5635C21.7448 5.88065 21.5375 6.16524 21.2799 6.400V6.40005Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                <path d="M11 4H6C4.93913 4 3.92178 4.42142 3.17163 5.17157C2.42149 5.92172 2 6.93913 2 8V18C2 19.0609 2.42149 20.0783 3.17163 20.8284C3.92178 21.5786 4.93913 22 6 22H17C19.21 22 20 20.2 20 18V13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
-                        </button>
-                        
-                        <form action="{{ route('comments.destroy', $comment->id) }}" method="POST" class="inline">
-                            @csrf
-                            @method('DELETE')
-                            <button type="button" onclick="confirmDelete(this.parentElement)" class="p-1.5 bg-red-100 text-red-600 rounded-lg hover:bg-red-200 transition">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12" />
-                                </svg>
-                            </button>
-                        </form>
-                    </div>
-                @endif
-            </div>
+                        @foreach ($post->comments as $comment)
+                            <div class="bg-gray-100 p-3 rounded-lg mb-2">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <a href="{{ auth()->user()->id === $comment->user_id ? route('profile.show') : route('profile.view', $comment->user->id) }}" class="hover:text-[#6FA843] transition">
+                                            <strong class="mr-2">{{ $comment->user->name }}</strong>
+                                        </a>
+                                    </div>
+                                    
+                                    @if (auth()->check() && (auth()->user()->id === $comment->user_id || auth()->user()->name === 'Admin'))
+                                        <div class="flex items-center gap-2">
+                                            <button onclick="toggleEditForm({{ $comment->id }})" class="p-1.5 bg-blue-100 text-blue-600 rounded-lg hover:bg-blue-200 transition">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path d="M21.2799 6.40005L11.7399 15.94C10.7899 16.89 7.96987 17.33 7.33987 16.7C6.70987 16.07 7.13987 13.25 8.08987 12.3L17.6399 2.75002C17.8754 2.49308 18.1605 2.28654 18.4781 2.14284C18.7956 1.99914 19.139 1.92124 19.4875 1.9139C19.8359 1.90657 20.1823 1.96991 20.5056 2.10012C20.8289 2.23033 21.1225 2.42473 21.3686 2.67153C21.6147 2.91833 21.8083 3.21243 21.9376 3.53609C22.0669 3.85976 22.1294 4.20626 22.1211 4.55471C22.1128 4.90316 22.0339 5.24635 21.8894 5.5635C21.7448 5.88065 21.5375 6.16524 21.2799 6.400V6.40005Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                                    <path d="M11 4H6C4.93913 4 3.92178 4.42142 3.17163 5.17157C2.42149 5.92172 2 6.93913 2 8V18C2 19.0609 2.42149 20.0783 3.17163 20.8284C3.92178 21.5786 4.93913 22 6 22H17C19.21 22 20 20.2 20 18V13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                                </svg>
+                                            </button>
+                                            
+                                            <form action="{{ route('comments.destroy', $comment->id) }}" method="POST" class="inline">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="button" onclick="confirmDelete(this.parentElement)" class="p-1.5 bg-red-100 text-red-600 rounded-lg hover:bg-red-200 transition">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12" />
+                                                    </svg>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    @endif
+                                </div>
 
-            @if (auth()->check() && (auth()->user()->id === $comment->user_id || auth()->user()->name === 'Admin'))
-                <!-- Normal comment display -->
-                <div id="comment-content-{{ $comment->id }}" class="mt-2">
-                    {{ $comment->content }}
-                </div>
+                                @if (auth()->check() && (auth()->user()->id === $comment->user_id || auth()->user()->name === 'Admin'))
+                                    <!-- Normal comment display -->
+                                    <div id="comment-content-{{ $comment->id }}" class="mt-2">
+                                        {{ $comment->content }}
+                                    </div>
 
-                <!-- Edit form (hidden by default) -->
-                <form action="{{ route('comments.update', $comment->id) }}" method="POST" id="edit-form-{{ $comment->id }}" class="mt-2 hidden">
-                    @csrf
-                    @method('PUT')
-                    <div class="flex items-center gap-2">
-                        <input type="text" name="content" value="{{ $comment->content }}" class="flex-1 max-w-md bg-white p-2 rounded-lg outline-none border border-gray-300 focus:border-[#6FA843]" required>
-                        <button type="submit" class="px-3 py-2 bg-[#6FA843] text-white rounded-lg hover:bg-[#578432] transition">
-                            Update
-                        </button>
-                        <button type="button" onclick="toggleEditForm({{ $comment->id }})" class="px-3 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition">
-                            Cancel
-                        </button>
+                                    <!-- Edit form (hidden by default) -->
+                                    <form action="{{ route('comments.update', $comment->id) }}" method="POST" id="edit-form-{{ $comment->id }}" class="mt-2 hidden">
+                                        @csrf
+                                        @method('PUT')
+                                        <div class="flex items-center gap-2">
+                                            <input type="text" name="content" value="{{ $comment->content }}" class="flex-1 max-w-md bg-white p-2 rounded-lg outline-none border border-gray-300 focus:border-[#6FA843]" required>
+                                            <button type="submit" class="px-3 py-2 bg-[#6FA843] text-white rounded-lg hover:bg-[#578432] transition">
+                                                Update
+                                            </button>
+                                            <button type="button" onclick="toggleEditForm({{ $comment->id }})" class="px-3 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition">
+                                                Cancel
+                                            </button>
+                                        </div>
+                                    </form>
+                                @else
+                                    <div class="mt-2">
+                                        {{ $comment->content }}
+                                    </div>
+                                @endif
+                            </div>
+                        @endforeach
                     </div>
-                </form>
-            @else
-                <div class="mt-2">
-                    {{ $comment->content }}
-                </div>
-            @endif
-        </div>
-    @endforeach
-</div>
                 </div>
             </div>
         </main>
