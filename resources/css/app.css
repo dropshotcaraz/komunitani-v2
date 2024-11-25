@@ -4,7 +4,7 @@
 
 body {
 
-    background:url(https://i.ibb.co.com/WGxJRQf/45126654-1.jpg);
+    background: url('/public/images/bg.jpg');
     background-position: center center;
     background-repeat: repeat;
     background-size: contain;
