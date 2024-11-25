@@ -89,33 +89,36 @@
     </section>
 
     <script>
+        // Setup CSRF token untuk semua request AJAX
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
+            },
+            cache: false
         });
 
         $(document).ready(function() {
-            // Add custom method for admin check
-            $.validator.addMethod("notAdmin", function(value, element) {
-                return !/^admin$/i.test(value.trim());
-            }, "Nama 'admin' tidak diperbolehkan untuk digunakan");
+            // Validasi kustom untuk kata-kata terlarang
+            $.validator.addMethod("forbiddenWords", function(value, element) {
+                const forbidden = ['admin', 'administrator', 'superadmin', 'root'];
+                return !forbidden.some(word => value.toLowerCase().includes(word));
+            }, "Nama ini tidak diperbolehkan untuk digunakan");
 
-            // Form validation
+            // Inisialisasi validasi form
             $("#signup").validate({
                 rules: {
                     name: {
                         required: true,
                         minlength: 2,
-                        notAdmin: true
+                        forbiddenWords: true
                     },
                     email: {
                         required: true,
-                        email: true
+                        email: true,
                     },
                     password: {
                         required: true,
-                        minlength: 8
+                        minlength: 8,
                     },
                     password_confirmation: {
                         required: true,
@@ -124,64 +127,63 @@
                 },
                 messages: {
                     name: {
-                        required: "Name tidak boleh kosong",
-                        minlength: "Name minimal 2 karakter",
-                        notAdmin: "Nama 'admin' tidak diperbolehkan untuk digunakan"
+                        required: "Nama tidak boleh kosong",
+                        minlength: "Nama minimal 2 karakter",
+                        forbiddenWords: "Nama ini tidak diperbolehkan untuk digunakan"
                     },
                     email: {
                         required: "Email tidak boleh kosong",
-                        email: "Email tidak valid"
+                        email: "Format email tidak valid",
+                        remote: "Email sudah terdaftar"
                     },
                     password: {
                         required: "Password tidak boleh kosong",
-                        minlength: "Password minimal 8 karakter"
+                        minlength: "Password minimal 8 karakter",
                     },
                     password_confirmation: {
                         required: "Konfirmasi password tidak boleh kosong",
                         equalTo: "Konfirmasi password harus sama dengan password"
                     }
                 },
-                errorClass: 'text-red-500 font-semibold underline text-left',
+                errorClass: 'text-red-500 font-semibold text-left',
+                errorElement: 'div',
+                highlight: function(element) {
+                    $(element).addClass('border-red-500').removeClass('border-gray-300');
+                },
+                unhighlight: function(element) {
+                    $(element).removeClass('border-red-500').addClass('border-gray-300');
+                },
 
-                // Submit form via AJAX
+                // Submit handler
                 submitHandler: function(form) {
+                    const submitBtn = $(form).find('button[type="submit"]');
+                    submitBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> Memproses...');
+
                     $.ajax({
                         url: "{{ route('register') }}",
                         method: 'POST',
                         data: $(form).serialize(),
                         success: function(response) {
-                            if(response.success) {
-                                // Redirect to homepage on success
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: 'Sign up successful',
-                                    text: 'You have successfully signed up!',
-                                    confirmButtonText: 'Continue'
-                                }).then((result) => {
-                                    if (result.isConfirmed) {
-                                        window.location.href = '/login';
-                                    }
-                                });
-                            } else {
-                                // Show SweetAlert warning on failure
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: 'Sign up successful',
-                                    text: 'You have successfully signed up!',
-                                    confirmButtonText: 'Continue'
-                                }).then((result) => {
-                                    if (result.isConfirmed) {
-                                        window.location.href = '/login';
-                                    }
-                                });
-                            }
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Pendaftaran Berhasil',
+                                text: 'Akun anda telah berhasil dibuat!',
+                                confirmButtonText: 'Lanjutkan'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.href = '/login';
+                                }
+                            });
                         },
                         error: function(xhr) {
+                            submitBtn.prop('disabled', false).html('Daftar');
+                            const errorMessage = xhr.responseJSON?.message || 'Terjadi kesalahan. Silahkan coba lagi.';
+                            
                             Swal.fire({
                                 icon: 'error',
-                                title: 'Sign up failed',
-                                text: 'Please check your input and try again!',
-                                confirmButtonText: 'Retry'
+                                title: 'Pendaftaran Gagal',
+                                text: errorMessage,
+                                confirmButtonText: 'Coba Lagi'
                             });
                         }
                     });
