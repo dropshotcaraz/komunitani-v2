@@ -45,6 +45,7 @@
                         @endif
                     @endauth
 
+
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
                         <x-nav-link :href="route('logout')" onclick="confirmLogout(event)"
@@ -64,17 +65,49 @@
                 </div>
             </div>
 
-            <!-- User Profile Section -->
+            <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">
-                <div class="flex items-center class="text-[#91972A]">
-                    @if (isset(Auth::user()->profile_picture) && Auth::user()->profile_picture)
-                        <div class="p-1">
-                            <img src="{{ asset('storage/' . Auth::user()->profile_picture) }}"
-                                alt="Profile Picture" class="h-6 w-6 rounded-full object-cover" />
-                        </div>
-                    @endif
-                    <div class="mx-1">{{ Auth::user()->name }}</div>
-                </div>
+                <x-dropdown align="right" width="48">
+                    <x-slot name="trigger">
+                        <button
+                            class="inline-flex items-center px-3 py-2 border border-black text-sm leading-4 font-medium rounded-2xl text-[#91972A] bg-[#E6D3A3] hover:bg-[#D8D174] transition ease-in-out duration-150">
+                            @if (isset(Auth::user()->profile_picture) && Auth::user()->profile_picture)
+                                <div class="p-1">
+                                    <img src="{{ asset('storage/' . Auth::user()->profile_picture) }}"
+                                        alt="Profile Picture" class="h-6 w-6 rounded-full object-cover" />
+                                </div>
+                            @endif
+                            <div class="mx-1">{{ Auth::user()->name }}</div>
+
+                            <div class="ms-1">
+                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd"
+                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                        </button>
+                    </x-slot>
+
+                    <x-slot name="content">
+                        <x-dropdown-link :href="route('profile.edit')" class="hover:bg-[#F6FEDB]">
+                            {{ __('Profile Setting') }}
+                        </x-dropdown-link>
+
+                        <!-- Authentication -->
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+
+                            <x-dropdown-link :href="route('logout')"
+                                onclick="event.preventDefault();
+                                                this.closest('form').submit();"
+                                class="hover:bg-[#F6FEDB]">
+                                {{ __('Log Out') }}
+                            </x-dropdown-link>
+                        </form>
+                    </x-slot>
+                </x-dropdown>
             </div>
 
             <!-- Hamburger -->
@@ -132,35 +165,58 @@
                         class="ml-2 h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" fill="none"
                         viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0  01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                            d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                     </svg>
                 </x-responsive-nav-link>
             </form>
         </div>
 
-        <!-- Responsive User Info -->
+        <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t border-[#E6D3A3]">
             <div class="px-4">
                 <div class="font-medium text-base text-[#91972A]">{{ Auth::user()->name }}</div>
                 <div class="font-medium text-sm text-[#B6C454]">{{ Auth::user()->email }}</div>
             </div>
+
+            <div class="mt-3 space-y-1">
+                <x-responsive-nav-link :href="route('profile.edit')" class="hover:bg-[#F6FEDB]">
+                    {{ __('Profile') }}
+                </x-responsive-nav-link>
+
+                <!-- Authentication -->
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+
+                    <x-responsive-nav-link :href="route('logout')"
+                        onclick="event.preventDefault();
+                                        this.closest('form').submit();"
+                        class="hover:bg-[#F6FEDB]">
+                        {{ __('Log Out') }}
+                    </x-responsive-nav-link>
+                </form>
+            </div>
         </div>
     </div>
-
+    
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
+    
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const hamburgerButton = document.querySelector('.sm:hidden button');
-            const responsiveMenu = document.querySelector('.sm:hidden');
+            const dropdownTrigger = document.querySelector('[x-data] [x-slot="trigger"] button');
+            const dropdownContent = document.querySelector('[x-data] [x-slot="content"]');
 
-            hamburgerButton.addEventListener('click', function() {
-                responsiveMenu.classList.toggle('hidden');
+            dropdownTrigger.addEventListener('click', function() {
+                dropdownContent.classList.toggle('hidden');
+            });
+
+            document.addEventListener('click', function(event) {
+                if (!dropdownTrigger.contains(event.target) && !dropdownContent.contains(event.target)) {
+                    dropdownContent.classList.add('hidden');
+                }
             });
         });
-
         function confirmLogout(event) {
             event.preventDefault();
             const form = event.target.closest('form');
@@ -184,6 +240,7 @@
                     if (form) {
                         form.submit();
                     } else {
+                        // For dropdown and responsive menu items that might not be in a form
                         const logoutForm = document.createElement('form');
                         logoutForm.method = 'POST';
                         logoutForm.action = '{{ route('logout') }}';
