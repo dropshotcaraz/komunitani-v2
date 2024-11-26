@@ -23,14 +23,31 @@
 
         <!-- Style -->
         <style>
-            body {
-                background: url('https://s6.imgcdn.dev/ExjQB.jpg');
-                background-position: center center;
-                background-repeat: repeat;
-                background-size: contain;
-                width: 100%;
-                background-color: rgba(255, 255, 255, 0.8);
-            }
+body {
+    position: relative; /* Ensure the body can contain the pseudo-element */
+    width: 100%;
+    height: 100vh; /* Set height to fill the viewport */
+    overflow: hidden; /* Prevent overflow */
+}
+
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('https://s6.imgcdn.dev/ExjQB.jpg');
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover; /* Use cover to fill the area */
+    opacity: 0.5; /* Adjust the opacity for fading effect */
+    z-index: -1; /* Place it behind other content */
+}
+
+body {
+    background-color: rgba(255, 255, 255, 0.8); /* Optional: Add a white background color */
+}
         </style>
 
         <!-- Scripts -->
