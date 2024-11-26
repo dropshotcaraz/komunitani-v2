@@ -197,6 +197,11 @@
             </div>
         </div>
     </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const dropdownTrigger = document.querySelector('[x-data] [x-slot="trigger"] button');
@@ -212,9 +217,6 @@
                 }
             });
         });
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script>
         function confirmLogout(event) {
             event.preventDefault();
             const form = event.target.closest('form');

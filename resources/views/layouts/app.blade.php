@@ -29,6 +29,7 @@
                 background-repeat: repeat;
                 background-size: contain;
                 width: 100%;
+                opacity: 0.8;
             }
         </style>
 
