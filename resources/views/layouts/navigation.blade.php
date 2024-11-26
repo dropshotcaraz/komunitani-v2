@@ -1,125 +1,93 @@
-<nav x-data="{ open: false }" class="bg-[#F6FEDB] sticky top-0 z-50 border-b border-[#E6D3A3] shadow-md">
+<nav x-data="{ open: false }" class="bg-[#F6FEDB] sticky top-0 z-50 border-b border-[#E6D3A3] shadow-[4px_4px_10px_0px_rgba(0,0,0,0.1),-4px_-4px_10px_0px_rgba(255,255,255,0.5)]">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto p-2 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center h-16">
             <div class="flex items-center">
                 <!-- Logo -->
-                <div class="shrink-0">
+                <div class="shrink-0 mr-6">
                     <a href="{{ route('dashboard') }}">
-                        <x-application-logo class="block h-9 w-auto fill-current text-[#91972A]" />
+                        <x-application-logo class="block h-10 w-auto fill-current text-[#91972A]" />
                     </a>
                 </div>
 
                 <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')"
-                        class="text-[#91972A] hover:text-[#B6C454] transition duration-200">
-                        {{ __('For You') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('followingpage')" :active="request()->routeIs('followingpage')"
-                        class="text-[#91972A] hover:text-[#B6C454] transition duration-200">
-                        {{ __('Following') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('messages')" :active="request()->routeIs('messages')"
-                        class="text-[#91972A] hover:text-[#B6C454] transition duration-200">
-                        {{ __('Messages') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('profile.show')" :active="request()->routeIs('profile.show')"
-                        class="text-[#91972A] hover:text-[#B6C454] transition duration-200">
-                        {{ __('Profile') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('chatbot.index')" :active="request()->routeIs('chatbot.index')"
-                        class="text-[#91972A] hover:text-[#B6C454] transition duration-200">
-                        {{ __('Chatbot') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('search')" :active="request()->routeIs('search')"
-                        class="text-[#91972A] hover:text-[#B6C454] transition duration-200">
-                        {{ __('Search') }}
-                    </x-nav-link>
-                    @auth
-                        @if (auth()->user()->name === 'Admin')
-                            <x-nav-link :href="route('users.index')" :active="request()->routeIs('users.index')"
-                                class="text-[#91972A] hover:text-[#B6C454] transition duration-200">
-                                {{ __('Users') }}
-                            </x-nav-link>
-                        @endif
-                    @endauth
+                <div class="hidden space-x-4 sm:-my-px sm:ms-10 sm:flex">
+                    <div class="flex items-center space-x-4">
+                        <a href="{{ route('dashboard') }}" 
+                           class="text-[#91972A] hover:text-[#B6C454] transition duration-200 
+                                  px-3 py-2 rounded-lg 
+                                  bg-[#F6FEDB] 
+                                  shadow-[3px_3px_6px_0px_rgba(0,0,0,0.1),-3px_-3px_6px_0px_rgba(255,255,255,0.5)] 
+                                  hover:shadow-[inset_3px_3px_6px_0px_rgba(0,0,0,0.1),inset_-3px_-3px_6px_0px_rgba(255,255,255,0.5)]">
+                            {{ __('For You') }}
+                        </a>
+                        
+                        <a href="{{ route('followingpage') }}" 
+                           class="text-[#91972A] hover:text-[#B6C454] transition duration-200 
+                                  px-3 py-2 rounded-lg 
+                                  bg-[#F6FEDB] 
+                                  shadow-[3px_3px_6px_0px_rgba(0,0,0,0.1),-3px_-3px_6px_0px_rgba(255,255,255,0.5)] 
+                                  hover:shadow-[inset_3px_3px_6px_0px_rgba(0,0,0,0.1),inset_-3px_-3px_6px_0px_rgba(255,255,255,0.5)]">
+                            {{ __('Following') }}
+                        </a>
 
+                        <!-- Add similar styled links for other navigation items -->
+                        <a href="{{ route('messages') }}" 
+                           class="text-[#91972A] hover:text-[#B6C454] transition duration-200 
+                                  px-3 py-2 rounded-lg 
+                                  bg-[#F6FEDB] 
+                                  shadow-[3px_3px_6px_0px_rgba(0,0,0,0.1),-3px_-3px_6px_0px_rgba(255,255,255,0.5)] 
+                                  hover:shadow-[inset_3px_3px_6px_0px_rgba(0,0,0,0.1),inset_-3px_-3px_6px_0px_rgba(255,255,255,0.5)]">
+                            {{ __('Messages') }}
+                        </a>
 
-                    <form method="POST" action="{{ route('logout') }}">
-                        @csrf
-                        <x-nav-link :href="route('logout')" onclick="confirmLogout(event)"
-                            class="group relative inline-flex items-center rounded-lg px-4 py-2 text-red-600 transition-all duration-200 hover:text-white hover:bg-red-500 hover:shadow-lg active:scale-95">
-                            <span>{{ __('Log Out') }}</span>
-                            <svg xmlns="http://www.w3.org/2000/svg"
-                                class="ml-2 h-4 w-4 transition-transform duration-200 group-hover:translate-x-1"
-                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                            </svg>
-                            <div
-                                class="absolute inset-0 -z-10 rounded-lg bg-gradient-to-br from-red-400 to-red-600 opacity-0 blur transition-opacity duration-200 group-hover:opacity-30">
-                            </div>
-                        </x-nav-link>
-                    </form>
+                        <!-- Profile and other links -->
+                        <a href="{{ route('profile.show') }}" 
+                           class="text-[#91972A] hover:text-[#B6C454] transition duration-200 
+                                  px-3 py-2 rounded-lg 
+                                  bg-[#F6FEDB] 
+                                  shadow-[3px_3px_6px_0px_rgba(0,0,0,0.1),-3px_-3px_6px_0px_rgba(255,255,255,0.5)] 
+                                  hover:shadow-[inset_3px_3px_6px_0px_rgba(0,0,0,0.1),inset_-3px_-3px_6px_0px_rgba(255,255,255,0.5)]">
+                            {{ __('Profile') }}
+                        </a>
+
+                        <!-- Logout Button with Neomorphic Style -->
+                        <form method="POST" action="{{ route('logout') }}" class="ml-4">
+                            @csrf
+                            <button onclick="confirmLogout(event)"
+                                    class="group relative inline-flex items-center 
+                                           px-4 py-2 rounded-lg 
+                                           text-red-600 
+                                           bg-[#F6FEDB] 
+                                           shadow-[3px_3px_6px_0px_rgba(0,0,0,0.1),-3px_-3px_6px_0px_rgba(255,255,255,0.5)] 
+                                           hover:shadow-[inset_3px_3px_6px_0px_rgba(0,0,0,0.1),inset_-3px_-3px_6px_0px_rgba(255,255,255,0.5)] 
+                                           transition-all duration-200 hover:text-red-700 active:scale-95">
+                                {{ __('Log Out') }}
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                     class="ml-2 h-4 w-4 transition-transform duration-200 group-hover:translate-x-1"
+                                     fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                          d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                                </svg>
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </div>
 
-            <!-- Settings Dropdown -->
-            <div class="hidden sm:flex sm:items-center sm:ms-6">
-                <x-dropdown align="right" width="48">
-                    <x-slot name="trigger">
-                        <button
-                            class="inline-flex items-center px-3 py-2 border border-black text-sm leading-4 font-medium rounded-2xl text-[#91972A] bg-[#E6D3A3] hover:bg-[#D8D174] transition ease-in-out duration-150">
-                            @if (isset(Auth::user()->profile_picture) && Auth::user()->profile_picture)
-                                <div class="p-1">
-                                    <img src="{{ asset('storage/' . Auth::user()->profile_picture) }}"
-                                        alt="Profile Picture" class="h-6 w-6 rounded-full object-cover" />
-                                </div>
-                            @endif
-                            <div class="mx-1">{{ Auth::user()->name }}</div>
-
-                            <div class="ms-1">
-                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd"
-                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                            </div>
-                        </button>
-                    </x-slot>
-
-                    <x-slot name="content">
-                        <x-dropdown-link :href="route('profile.edit')" class="hover:bg-[#F6FEDB]">
-                            {{ __('Profile Setting') }}
-                        </x-dropdown-link>
-
-                        <!-- Authentication -->
-                        <form method="POST" action="{{ route('logout') }}">
-                            @csrf
-
-                            <x-dropdown-link :href="route('logout')"
-                                onclick="event.preventDefault();
-                                                this.closest('form').submit();"
-                                class="hover:bg-[#F6FEDB]">
-                                {{ __('Log Out') }}
-                            </x-dropdown-link>
-                        </form>
-                    </x-slot>
-                </x-dropdown>
-            </div>
-
-            <!-- Hamburger -->
+            <!-- Hamburger for Mobile -->
             <div class="-me-2 flex items-center sm:hidden">
                 <button @click="open = ! open"
-                    class="inline-flex items-center justify-center p-2 rounded-md text-[#91972A] hover:bg-[#E6D3A3] focus:outline-none transition duration-150 ease-in-out">
+                        class="inline-flex items-center justify-center p-2 rounded-md 
+                               text-[#91972A] hover:bg-[#E6D3A3] 
+                               focus:outline-none transition duration-150 ease-in-out 
+                               shadow-[3px_3px_6px_0px_rgba(0,0,0,0.1),-3px_-3px_6px_0px_rgba(255,255,255,0.5)]">
                     <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                         <path :class="{ 'hidden': open, 'inline-flex': !open }" class="inline-flex"
-                            stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M4 6h16M4 12h16M4 18h16" />
+                              stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M4 6h16M4 12h16M4 18h16" />
                         <path :class="{ 'hidden': !open, 'inline-flex': open }" class="hidden" stroke-linecap="round"
-                            stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                              stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12  12" />
                     </svg>
                 </button>
             </div>
@@ -129,74 +97,37 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{ 'block': open, 'hidden': !open }" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" class="hover:bg-[#D8D174]">
+            <a href="{{ route('dashboard') }}" 
+               class="block text-[#91972A] hover:bg-[#D8D174] transition duration-200 
+                      px-4 py-2 rounded-lg">
                 {{ __('For You') }}
-            </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('followingpage')" :active="request()->routeIs('followingpage')" class="hover:bg-[#D8D174]">
-                {{ __('Following Page') }}
-            </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('messages')" :active="request()->routeIs('messages')" class="hover:bg-[#D8D174]">
+            </a>
+            <a href="{{ route('followingpage') }}" 
+               class="block text-[#91972A] hover:bg-[#D8D174] transition duration-200 
+                      px-4 py-2 rounded-lg">
+                {{ __('Following') }}
+            </a>
+            <a href="{{ route('messages') }}" 
+               class="block text-[#91972A] hover:bg-[#D8D174] transition duration-200 
+                      px-4 py-2 rounded-lg">
                 {{ __('Messages') }}
-            </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('profile.show')" :active="request()->routeIs('profile.show')" class="hover:bg-[#D8D174]">
+            </a>
+            <a href="{{ route('profile.show') }}" 
+               class="block text-[#91972A] hover:bg-[#D8D174] transition duration-200 
+                      px-4 py-2 rounded-lg">
                 {{ __('Profile') }}
-            </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('chatbot.index')" :active="request()->routeIs('chatbot.index')" class="hover:bg-[#D8D174]">
-                {{ __('Chatbot') }}
-            </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('search')" :active="request()->routeIs('search')" class="hover:bg-[#D8D174]">
-                {{ __('Search') }}
-            </x-responsive-nav-link>
-            @auth
-                @if (auth()->user()->name === 'Admin')
-                    <x-nav-link :href="route('users.index')" :active="request()->routeIs('users.index')"
-                        class="text-[#91972A] hover:text-[#B6C454] transition duration-200">
-                        {{ __('Users') }}
-                    </x-nav-link>
-                @endif
-            @endauth
-
+            </a>
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
-                <x-responsive-nav-link :href="route('logout')" onclick="confirmLogout(event)"
-                    class="group relative inline-flex items-center w-full px-4 py-2 text-red-600 transition-all duration-200 hover:text-white hover:bg-red-500">
-                    <span>{{ __('Log Out') }}</span>
-                    <svg xmlns="http://www.w3.org/2000/svg"
-                        class="ml-2 h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" fill="none"
-                        viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                    </svg>
-                </x-responsive-nav-link>
+                <button onclick="confirmLogout(event)"
+                        class="block w-full text-left text-red-600 hover:bg-red-500 hover:text-white 
+                               transition duration-200 px-4 py-2 rounded-lg">
+                    {{ __('Log Out') }}
+                </button>
             </form>
         </div>
-
-        <!-- Responsive Settings Options -->
-        <div class="pt-4 pb-1 border-t border-[#E6D3A3]">
-            <div class="px-4">
-                <div class="font-medium text-base text-[#91972A]">{{ Auth::user()->name }}</div>
-                <div class="font-medium text-sm text-[#B6C454]">{{ Auth::user()->email }}</div>
-            </div>
-
-            <div class="mt-3 space-y-1">
-                <x-responsive-nav-link :href="route('profile.edit')" class="hover:bg-[#F6FEDB]">
-                    {{ __('Profile') }}
-                </x-responsive-nav-link>
-
-                <!-- Authentication -->
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-
-                    <x-responsive-nav-link :href="route('logout')"
-                        onclick="event.preventDefault();
-                                        this.closest('form').submit();"
-                        class="hover:bg-[#F6FEDB]">
-                        {{ __('Log Out') }}
-                    </x-responsive-nav-link>
-                </form>
-            </div>
-        </div>
     </div>
+
     
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.tailwindcss.com"></script>
