@@ -21,6 +21,17 @@
         <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
+        <!-- Style -->
+        <style>
+            body {
+                background: url('https://s6.imgcdn.dev/ExjQB.jpg');
+                background-position: center center;
+                background-repeat: repeat;
+                background-size: contain;
+                width: 100%;
+            }
+        </style>
+
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
